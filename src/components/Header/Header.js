@@ -25,15 +25,14 @@ class Header extends React.Component {
             <img
               src={logoUrl}
               srcSet={`${logoUrl2x} 2x`}
-              width="138"
-              height="31"
+              width="107"
+              height="24"
               alt="ICOX-logo"
             />
-            <span className={s.brandTxt}>i</span>
           </Link>
           <div className={s.banner}>
-            <h1 className={s.bannerTitle}>React</h1>
-            <p className={s.bannerDesc}>Create ICO using Bitcoin</p>
+            <h1 className={s.bannerTitle}>Smart contracts on Bitcoin</h1>
+            <p className={s.bannerDesc}>Use Bitcoin for your next ICO</p>
           </div>
         </div>
       </div>

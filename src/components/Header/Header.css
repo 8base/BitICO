@@ -28,10 +28,7 @@
   color: color(var(--brand-color) lightness(+10%));
   text-decoration: none;
   font-size: 1.75em; /* ~28px */
-}
-
-.brandTxt {
-  margin-left: 10px;
+  margin: 10px;
 }
 
 .banner {
@@ -40,6 +37,7 @@
 
 .bannerTitle {
   margin: 0;
+  margin-top: 70px;
   padding: 10px;
   font-weight: normal;
   font-size: 4em;
@@ -47,7 +45,7 @@
 }
 
 .bannerDesc {
-  min-height: 300px;
+  min-height: 250px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 1.25em;
   margin: 0;

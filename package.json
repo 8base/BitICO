@@ -28,6 +28,7 @@
     "jwk-to-pem": "^1.2.6",
     "jwks-rsa": "^1.2.1",
     "mysql2": "^1.5.1",
+    "material-ui": "^0.20.0",
     "node-fetch": "^1.7.3",
     "normalize.css": "^7.0.0",
     "pretty-error": "^2.1.1",
