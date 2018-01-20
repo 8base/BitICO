@@ -10,11 +10,11 @@
 @import '../variables.css';
 
 :root {
-  --brand-color: #61dafb;
+  --brand-color: #0271cb;
 }
 
 .root {
-  background: #373277;
+  background: #0271cb;
   color: #fff;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .bannerDesc {
-  padding: 0;
+  min-height: 300px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 1.25em;
   margin: 0;
