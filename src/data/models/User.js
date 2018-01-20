@@ -24,10 +24,9 @@ const User = Model.define(
       validate: { isEmail: true },
     },
 
-    emailConfirmed: {
-      type: DataType.BOOLEAN,
-      defaultValue: false,
-    },
+    fullName: {
+      type: DataType.STRING(255),
+    }
   },
   {
     indexes: [{ fields: ['email'] }],
