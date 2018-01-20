@@ -10,6 +10,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import s from './Admin.css';
 
 const fields = [
@@ -80,48 +82,36 @@ class Admin extends React.Component {
     Admin.handleSubmit = Admin.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    const key = event.target.id;
-    const val = event.target.value;
+  handleChange(key, val) {
     const obj = {};
     obj[key] = val;
     this.setState(obj);
   }
 
   render() {
-    const formLabelStyle = {
-      display: 'block',
-      fontSize: '1.2em',
-      fontWeight: 400,
-      fontFamily: 'Helvetica',
-    };
-
-    const labelStyle = {
-      display: 'block',
-      fontSize: '1.1em',
-      fontWeight: 400,
-      fontFamily: 'Helvetica',
-    };
-
     return (
       <div className={s.root}>
         <form onSubmit={() => Admin.handleSubmit()} className={s.container}>
           <h1>{this.props.title}</h1>
+
           {fields.map(f => (
-            <fieldset key={f.name} style={{ padding: '1em 0em' }}>
+            <fieldset key={f.name}>
               <label htmlFor={f.name}>
-                <span style={formLabelStyle}>{f.name}</span>
-                <input
-                  type={f.type}
-                  value={this.state[f.name]}
-                  id={f.name}
-                  onChange={e => this.handleChange(e)}
-                  style={labelStyle}
+                <TextField
+                  hintText={f.name}
+                  floatingLabelText={f.name}
+                  onChange={(e, n) => this.handleChange(f.name, n)}
+                  style={{ fontSize: '1.4em' }}
                 />
               </label>
             </fieldset>
           ))}
-          <input type="submit" value="Submit" />
+
+          <RaisedButton
+            label="Submit"
+            primary
+            onClick={() => Admin.handleSubmit()}
+          />
         </form>
       </div>
     );
