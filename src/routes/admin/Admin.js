@@ -8,10 +8,11 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import DatePicker from 'material-ui/DatePicker';
+
 import s from './Admin.css';
 
 const fields = [
@@ -21,18 +22,22 @@ const fields = [
   },
   {
     name: 'Token Name',
+    example: 'Ex: BitBam',
     type: 'text',
   },
   {
     name: 'Token Ticker',
+    example: 'Ex: COI',
     type: 'text',
   },
   {
     name: 'Total Supply',
+    example: 'Ex: 1,000,000',
     type: 'number',
   },
   {
     name: 'Allocation',
+    example: 'Ex: 300,000',
     type: 'number',
   },
   {
@@ -52,19 +57,13 @@ const fields = [
     type: 'date',
   },
   {
-    name: 'RSK Address',
-    type: 'textarea',
-  },
-  {
     name: 'BTC Value Per Token',
+    example: 'Ex: 0.00001',
     type: 'number',
   },
 ];
 
 class Admin extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-  };
 
   static handleSubmit(event) {
     event.preventDefault();
@@ -92,18 +91,42 @@ class Admin extends React.Component {
     return (
       <div className={s.root}>
         <form onSubmit={() => Admin.handleSubmit()} className={s.container}>
-          <h1>{this.props.title}</h1>
+          <h1>Create Custom Token</h1>
 
           {fields.map(f => (
             <fieldset key={f.name}>
-              <label htmlFor={f.name}>
-                <TextField
-                  hintText={f.name}
-                  floatingLabelText={f.name}
-                  onChange={(e, n) => this.handleChange(f.name, n)}
-                  style={{ fontSize: '1.4em' }}
-                />
-              </label>
+
+              {
+                f.type === "file"?
+                  <RaisedButton
+                    label="Upload Icon"
+                    primary
+                  />
+                  :
+                  null
+              }
+
+              {
+                f.type === "text" || f.type === "number" ?
+                  <TextField
+                    hintText={f.example || f.name}
+                    floatingLabelText={f.name}
+                    onChange={(e, n) => this.handleChange(f.name, n)}
+                  />
+                  :
+                  null
+              }
+
+              {
+                f.type === "date" ?
+                  <DatePicker
+                    hintText={f.name}
+                    onChange={(e, n) => this.handleChange(f.name, n)}
+                  />
+                  :
+                  null
+              }
+
             </fieldset>
           ))}
 
