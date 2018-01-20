@@ -12,7 +12,6 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { UnauthorizedError as Jwt401Error } from 'express-jwt';
-import expressGraphQL from 'express-graphql';
 import fetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -24,11 +23,10 @@ import errorPageStyle from './routes/error/ErrorPage.css';
 import createFetch from './createFetch';
 import router from './router';
 import models from './data/models';
-import schema from './data/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
-import checkJwt from './services/auth';
-import JWTVerify from "./services/jwtVerify";
+import fetchOrCreateUser from "./services/auth";
+
 
 const app = express();
 
@@ -98,12 +96,18 @@ app.get(
 );
 */
 
+
+
+app.get("/test", fetchOrCreateUser, (req, res) => {
+  res.send("asd");
+});
+
 // app.use(checkJwt);
 
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
-app.post(
+/* app.post(
   '/graphql',
   checkJwt,
   expressGraphQL(async req =>  {
@@ -125,7 +129,7 @@ app.post(
       }
     },
   )
-);
+); */
 
 
 
