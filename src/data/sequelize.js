@@ -8,9 +8,11 @@
  */
 
 import Sequelize from 'sequelize';
-import config from '../config';
+// import config from '../config';
 
-const sequelize = new Sequelize(config.databaseUrl, {
+const sequelize = new Sequelize('icox', 'root', '', {
+  host: '127.0.0.1',
+  dialect: 'mysql',
   define: {
     freezeTableName: true,
   },
