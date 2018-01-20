@@ -1,113 +1,163 @@
 /**
  * React Starter Kit (https://www.reactstarterkit.com/)
  *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import 'babel-polyfill';
+import 'whatwg-fetch';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import FastClick from 'fastclick';
-import Router from './routes';
-import Location from './core/Location';
-import { addEventListener, removeEventListener } from './core/DOMUtils';
+import deepForceUpdate from 'react-deep-force-update';
+import queryString from 'query-string';
+import { createPath } from 'history/PathUtils';
+import App from './components/App';
+import createFetch from './createFetch';
+import history from './history';
+import { updateMeta } from './DOMUtils';
+import router from './router';
 
-let cssContainer = document.getElementById('css');
-const appContainer = document.getElementById('app');
+// Global (context) variables that can be easily accessed from any React component
+// https://facebook.github.io/react/docs/context.html
 const context = {
-  insertCss: styles => styles._insertCss(),
-  onSetTitle: value => (document.title = value),
-  onSetMeta: (name, content) => {
-    // Remove and create a new <meta /> tag in order to make it work
-    // with bookmarks in Safari
-    const elements = document.getElementsByTagName('meta');
-    Array.from(elements).forEach((element) => {
-      if (element.getAttribute('name') === name) {
-        element.parentNode.removeChild(element);
-      }
-    });
-    const meta = document.createElement('meta');
-    meta.setAttribute('name', name);
-    meta.setAttribute('content', content);
-    document
-      .getElementsByTagName('head')[0]
-      .appendChild(meta);
+  // Enables critical path CSS rendering
+  // https://github.com/kriasoft/isomorphic-style-loader
+  insertCss: (...styles) => {
+    // eslint-disable-next-line no-underscore-dangle
+    const removeCss = styles.map(x => x._insertCss());
+    return () => {
+      removeCss.forEach(f => f());
+    };
   },
+  // Universal HTTP client
+  fetch: createFetch(fetch, {
+    baseUrl: window.App.apiUrl,
+  }),
 };
 
-// Google Analytics tracking. Don't send 'pageview' event after the first
-// rendering, as it was already sent by the Html component.
-let trackPageview = () => (trackPageview = () => window.ga('send', 'pageview'));
+const container = document.getElementById('app');
+let currentLocation = history.location;
+let appInstance;
 
-function render(state) {
-  Router.dispatch(state, (newState, component) => {
-    ReactDOM.render(component, appContainer, () => {
-      // Restore the scroll position if it was saved into the state
-      if (state.scrollY !== undefined) {
-        window.scrollTo(state.scrollX, state.scrollY);
-      } else {
-        window.scrollTo(0, 0);
-      }
-
-      trackPageview();
-
-      // Remove the pre-rendered CSS because it's no longer used
-      // after the React app is launched
-      if (cssContainer) {
-        cssContainer.parentNode.removeChild(cssContainer);
-        cssContainer = null;
-      }
-    });
-  });
+// Switch off the native scroll restoration behavior and handle it manually
+// https://developers.google.com/web/updates/2015/09/history-api-scroll-restoration
+const scrollPositionsHistory = {};
+if (window.history && 'scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
 }
 
-function run() {
-  let currentLocation = null;
-  let currentState = null;
-
-  // Make taps on links and buttons work fast on mobiles
-  FastClick.attach(document.body);
-
-  // Re-render the app when window.location changes
-  const unlisten = Location.listen(location => {
-    currentLocation = location;
-    currentState = Object.assign({}, location.state, {
-      path: location.pathname,
-      query: location.query,
-      state: location.state,
-      context,
-    });
-    render(currentState);
-  });
-
-  // Save the page scroll position into the current location's state
-  const supportPageOffset = window.pageXOffset !== undefined;
-  const isCSS1Compat = ((document.compatMode || '') === 'CSS1Compat');
-  const setPageOffset = () => {
-    currentLocation.state = currentLocation.state || Object.create(null);
-    if (supportPageOffset) {
-      currentLocation.state.scrollX = window.pageXOffset;
-      currentLocation.state.scrollY = window.pageYOffset;
-    } else {
-      currentLocation.state.scrollX = isCSS1Compat ?
-        document.documentElement.scrollLeft : document.body.scrollLeft;
-      currentLocation.state.scrollY = isCSS1Compat ?
-        document.documentElement.scrollTop : document.body.scrollTop;
-    }
+// Re-render the app when window.location changes
+async function onLocationChange(location, action) {
+  // Remember the latest scroll position for the previous location
+  scrollPositionsHistory[currentLocation.key] = {
+    scrollX: window.pageXOffset,
+    scrollY: window.pageYOffset,
   };
+  // Delete stored scroll position for next page if any
+  if (action === 'PUSH') {
+    delete scrollPositionsHistory[location.key];
+  }
+  currentLocation = location;
 
-  addEventListener(window, 'scroll', setPageOffset);
-  addEventListener(window, 'pagehide', () => {
-    removeEventListener(window, 'scroll', setPageOffset);
-    unlisten();
-  });
+  const isInitialRender = !action;
+  try {
+    // Traverses the list of routes in the order they are defined until
+    // it finds the first route that matches provided URL path string
+    // and whose action method returns anything other than `undefined`.
+    const route = await router.resolve({
+      ...context,
+      pathname: location.pathname,
+      query: queryString.parse(location.search),
+    });
+
+    // Prevent multiple page renders during the routing process
+    if (currentLocation.key !== location.key) {
+      return;
+    }
+
+    if (route.redirect) {
+      history.replace(route.redirect);
+      return;
+    }
+
+    const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
+    appInstance = renderReactApp(
+      <App context={context}>{route.component}</App>,
+      container,
+      () => {
+        if (isInitialRender) {
+          const elem = document.getElementById('css');
+          if (elem) elem.parentNode.removeChild(elem);
+          return;
+        }
+
+        document.title = route.title;
+
+        updateMeta('description', route.description);
+        // Update necessary tags in <head> at runtime here, ie:
+        // updateMeta('keywords', route.keywords);
+        // updateCustomMeta('og:url', route.canonicalUrl);
+        // updateCustomMeta('og:image', route.imageUrl);
+        // updateLink('canonical', route.canonicalUrl);
+        // etc.
+
+        let scrollX = 0;
+        let scrollY = 0;
+        const pos = scrollPositionsHistory[location.key];
+        if (pos) {
+          scrollX = pos.scrollX;
+          scrollY = pos.scrollY;
+        } else {
+          const targetHash = location.hash.substr(1);
+          if (targetHash) {
+            const target = document.getElementById(targetHash);
+            if (target) {
+              scrollY = window.pageYOffset + target.getBoundingClientRect().top;
+            }
+          }
+        }
+
+        // Restore the scroll position if it was saved into the state
+        // or scroll to the given #hash anchor
+        // or scroll to top of the page
+        window.scrollTo(scrollX, scrollY);
+
+        // Google Analytics tracking. Don't send 'pageview' event after
+        // the initial rendering, as it was already sent
+        if (window.ga) {
+          window.ga('send', 'pageview', createPath(location));
+        }
+      },
+    );
+  } catch (error) {
+    if (__DEV__) {
+      throw error;
+    }
+
+    console.error(error);
+
+    // Do a full page reload if error occurs during client-side navigation
+    if (!isInitialRender && currentLocation.key === location.key) {
+      window.location.reload();
+    }
+  }
 }
 
-// Run the application when both DOM is ready and page content is loaded
-if (['complete', 'loaded', 'interactive'].includes(document.readyState) && document.body) {
-  run();
-} else {
-  document.addEventListener('DOMContentLoaded', run, false);
+// Handle client-side navigation by using HTML5 History API
+// For more information visit https://github.com/mjackson/history#readme
+history.listen(onLocationChange);
+onLocationChange(currentLocation);
+
+// Enable Hot Module Replacement (HMR)
+if (module.hot) {
+  module.hot.accept('./router', () => {
+    if (appInstance && appInstance.updater.isMounted(appInstance)) {
+      // Force-update the whole tree, including components that refuse to update
+      deepForceUpdate(appInstance);
+    }
+
+    onLocationChange(currentLocation);
+  });
 }

@@ -1,7 +1,11 @@
 [ignore]
 .*/build
-.*/config
+.*/docs
 .*/node_modules
-.*/gulpfile.js
+.*/public
 
 [include]
+
+[options]
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=src
