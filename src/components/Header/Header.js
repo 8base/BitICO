@@ -29,7 +29,6 @@ class Header extends React.Component {
               height="24"
               alt="ICOX-logo"
             />
-            <span className={s.brandTxt}>i</span>
           </Link>
           <div className={s.banner}>
             <h1 className={s.bannerTitle}>Smart contracts on Bitcoin</h1>
