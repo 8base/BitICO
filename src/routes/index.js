@@ -28,6 +28,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'login' */ './login'),
     },
     {
+      path: '/callback',
+      load: () => import(/* webpackChunkName: 'register' */ './register'),
+    },
+    {
       path: '/register',
       load: () => import(/* webpackChunkName: 'register' */ './register'),
     },

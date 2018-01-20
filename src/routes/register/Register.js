@@ -13,22 +13,27 @@ import auth0 from 'auth0-js';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Register.css';
 
-const auth = new auth0.WebAuth({
+const auth0Config = {
   domain: 'icox.auth0.com',
   clientID: 'bYwwYC1OZt1T3mt0lPLLZOTC3V9W5zyq',
   redirectUri: 'http://localhost:3000/callback',
   audience: 'https://icox.auth0.com/userinfo',
   responseType: 'token id_token',
-  scope: 'openid'
-});
+  scope: 'openid email profile',
+};
 
 class Register extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.auth = new auth0.WebAuth(auth0Config);
+  }
+
   login() {
-    auth.authorize();
+    this.auth.authorize();
   }
 
   render() {
@@ -36,7 +41,7 @@ class Register extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           <h1>{this.props.title}</h1>
-          <button onClick={this.login.bind(this)}>Log In</button>
+          <button onClick={() => this.login()}>Log In</button>
         </div>
       </div>
     );
