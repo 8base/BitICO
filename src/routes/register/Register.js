@@ -9,20 +9,34 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import auth0 from 'auth0-js';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Register.css';
+
+const auth = new auth0.WebAuth({
+  domain: 'icox.auth0.com',
+  clientID: 'bYwwYC1OZt1T3mt0lPLLZOTC3V9W5zyq',
+  redirectUri: 'http://localhost:3000/callback',
+  audience: 'https://icox.auth0.com/userinfo',
+  responseType: 'token id_token',
+  scope: 'openid'
+});
 
 class Register extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
   };
 
+  login() {
+    auth.authorize();
+  }
+
   render() {
     return (
       <div className={s.root}>
         <div className={s.container}>
           <h1>{this.props.title}</h1>
-          <p>...</p>
+          <button onClick={this.login.bind(this)}>Log In</button>
         </div>
       </div>
     );
