@@ -19,7 +19,6 @@ import {
   pinkA200,
   grey300,
   cyan500,
-  indigo50,
   grey500,
   grey100,
 } from 'material-ui/styles/colors';
@@ -48,7 +47,7 @@ const muiTheme = getMuiTheme({
     accent3Color: grey500,
     textColor: darkBlack,
     alternateTextColor: white,
-    canvasColor: indigo50,
+    canvasColor: white,
     borderColor: grey300,
     disabledColor: fade(darkBlack, 0.3),
     pickerHeaderColor: cyan500,
