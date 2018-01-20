@@ -7,6 +7,8 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
+require('dotenv').config();
+
 /* eslint-disable max-len */
 
 if (process.env.BROWSER) {

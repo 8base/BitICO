@@ -39,12 +39,14 @@ module.exports = {
     // Recommend not to leave any console.log in your code
     // Use console.error, console.warn and console.info instead
     // https://eslint.org/docs/rules/no-console
+/*
     'no-console': [
       'error',
       {
         allow: ['warn', 'error', 'info'],
       },
     ],
+*/
 
     // Prefer destructuring from arrays and objects
     // http://eslint.org/docs/rules/prefer-destructuring
@@ -86,7 +88,7 @@ module.exports = {
 
     // ESLint plugin for prettier formatting
     // https://github.com/prettier/eslint-plugin-prettier
-    'prettier/prettier': 'error',
+//    'prettier/prettier': 'error',
   },
 
   settings: {

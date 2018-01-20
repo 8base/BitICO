@@ -11,7 +11,7 @@ import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
+import { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import expressGraphQL from 'express-graphql';
 import fetch from 'node-fetch';
 import React from 'react';
@@ -29,8 +29,6 @@ import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
 import checkJwt from './services/auth';
 import JWTVerify from "./services/jwtVerify";
-
-const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -100,76 +98,24 @@ app.get(
 );
 */
 
-app.use(checkJwt);
+// app.use(checkJwt);
 
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
-app.use(
+app.post(
   '/graphql',
+  checkJwt,
   expressGraphQL(async req =>  {
-//    console.log("hello world", req);
-    console.log("id token", req.headers.id_token);
-    const idToken = req.headers.id_token;
-
-      const IdTokenVerifier = require('idtoken-verifier');
-
-      const verifier = new IdTokenVerifier({
-        issuer: 'https://icox.auth0.com/',
-        audience: 'https://icox.auth0.com/api/v2/'
-      });
-
-/*
-      verifier.verify(idToken, "12345", function(error, payload) {
-        console.log(error, payload);
-      });
-*/
-
-/*
-      console.log("111");
-      var decoded = verifier.decode(idToken);
-      console.log("decoded = ", decoded);
-*/
-
+      const idToken = req.headers.id_token;
 
       const verify = new JWTVerify();
-      console.log("1");
       await verify.updateKeys();
-      console.log("2");
       verify.validate(idToken, (err, data) => {
         console.log("err = ", err);
         console.log("data = ", data);
 
       });
-
-/*
-      let decodedJwt = jwt.decode(idToken, { complete: true });
-      console.log("decoded = ", decodedJwt);
-
-      let kid = decodedJwt.header.kid;
-      console.log("kid = ", kid);
-      let pem = this.pems[kid];
-
-      jwt.verify(
-        decodedJwt,
-        pem,
-        {
-          issuer: this.iss,
-          maxAge: this.tokenExpiration
-        },
-        function(err: any, payload: any) {
-          if (err) {
-            if (err instanceof jwt.TokenExpiredError) {
-              return callback(new TokenExpiredError(err.message), null);
-            } else {
-              return callback(new InvalidTokenError(err.message), null);
-            }
-          }
-          return callback(null, payload);
-        }
-      );
-*/
-
 
       return {
         schema,
@@ -257,7 +203,7 @@ app.use((err, req, res, next) => {
       description={err.message}
       styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]} // eslint-disable-line no-underscore-dangle
     >
-      {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
+    {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
     </Html>,
   );
   res.status(err.status || 500);
