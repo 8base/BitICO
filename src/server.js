@@ -13,7 +13,6 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import expressGraphQL from 'express-graphql';
-import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -23,12 +22,15 @@ import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 import createFetch from './createFetch';
-import passport from './passport';
 import router from './router';
 import models from './data/models';
 import schema from './data/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
+import checkJwt from './services/auth';
+import JWTVerify from "./services/jwtVerify";
+
+const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -50,6 +52,7 @@ app.use(bodyParser.json());
 //
 // Authentication
 // -----------------------------------------------------------------------------
+/*
 app.use(
   expressJwt({
     secret: config.auth.jwt.secret,
@@ -57,6 +60,7 @@ app.use(
     getToken: req => req.cookies.id_token,
   }),
 );
+*/
 // Error handler for express-jwt
 app.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
@@ -68,11 +72,12 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
 if (__DEV__) {
   app.enable('trust proxy');
 }
+/*
 app.get(
   '/login/facebook',
   passport.authenticate('facebook', {
@@ -93,19 +98,90 @@ app.get(
     res.redirect('/');
   },
 );
+*/
+
+app.use(checkJwt);
 
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
 app.use(
   '/graphql',
-  expressGraphQL(req => ({
-    schema,
-    graphiql: __DEV__,
-    rootValue: { request: req },
-    pretty: __DEV__,
-  })),
+  expressGraphQL(async req =>  {
+//    console.log("hello world", req);
+    console.log("id token", req.headers.id_token);
+    const idToken = req.headers.id_token;
+
+      const IdTokenVerifier = require('idtoken-verifier');
+
+      const verifier = new IdTokenVerifier({
+        issuer: 'https://icox.auth0.com/',
+        audience: 'https://icox.auth0.com/api/v2/'
+      });
+
+/*
+      verifier.verify(idToken, "12345", function(error, payload) {
+        console.log(error, payload);
+      });
+*/
+
+/*
+      console.log("111");
+      var decoded = verifier.decode(idToken);
+      console.log("decoded = ", decoded);
+*/
+
+
+      const verify = new JWTVerify();
+      console.log("1");
+      await verify.updateKeys();
+      console.log("2");
+      verify.validate(idToken, (err, data) => {
+        console.log("err = ", err);
+        console.log("data = ", data);
+
+      });
+
+/*
+      let decodedJwt = jwt.decode(idToken, { complete: true });
+      console.log("decoded = ", decodedJwt);
+
+      let kid = decodedJwt.header.kid;
+      console.log("kid = ", kid);
+      let pem = this.pems[kid];
+
+      jwt.verify(
+        decodedJwt,
+        pem,
+        {
+          issuer: this.iss,
+          maxAge: this.tokenExpiration
+        },
+        function(err: any, payload: any) {
+          if (err) {
+            if (err instanceof jwt.TokenExpiredError) {
+              return callback(new TokenExpiredError(err.message), null);
+            } else {
+              return callback(new InvalidTokenError(err.message), null);
+            }
+          }
+          return callback(null, payload);
+        }
+      );
+*/
+
+
+      return {
+        schema,
+        graphiql: __DEV__,
+        rootValue: { request: req },
+        pretty: __DEV__,
+      }
+    },
+  )
 );
+
+
 
 //
 // Register server-side rendering middleware
@@ -162,6 +238,8 @@ app.get('*', async (req, res, next) => {
     next(err);
   }
 });
+
+
 
 //
 // Error handling
