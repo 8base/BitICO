@@ -17,9 +17,10 @@ const auth0Config = {
   domain: 'icox.auth0.com',
   clientID: 'bYwwYC1OZt1T3mt0lPLLZOTC3V9W5zyq',
   redirectUri: 'http://localhost:3000/callback',
-  audience: 'https://icox.auth0.com/userinfo',
+  audience: 'https://icox.auth0.com/api/v2/',
   responseType: 'token id_token',
   scope: 'openid email profile',
+  nonce: '12345',
 };
 
 class Register extends React.Component {
