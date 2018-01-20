@@ -15,7 +15,7 @@ import s from './Register.css';
 
 const auth0Config = {
   domain: 'icox.auth0.com',
-  clientID: 'bYwwYC1OZt1T3mt0lPLLZOTC3V9W5zyq',
+  clientID: 'r95U770a_EpMnBzUcvtT6b92cusI3A_7',
   redirectUri: 'http://localhost:3000/callback',
   audience: 'https://icox.auth0.com/api/v2/',
   responseType: 'token id_token',
