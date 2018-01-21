@@ -180,12 +180,12 @@ class ViewToken extends React.Component {
                 <p className={s["info-p"]}>{this.state.record.rate}</p>
               </Col>
               <Col sm={4}>
-                <h4 className={s["info-h4"]}>{TokenFields.softCap.name}</h4>
-                <p className={s["info-p"]}>{this.state.record.softCap}</p>
+                <h4 className={s["info-h4"]}>{TokenFields.softCap.name} (BTC)</h4>
+                <p className={s["info-p"]}>{parseFloat(this.state.record.softCap)}</p>
               </Col>
               <Col sm={4}>
-                <h4 className={s["info-h4"]}>{TokenFields.hardCap.name}</h4>
-                <p className={s["info-p"]}>{this.state.record.hardCap}</p>
+                <h4 className={s["info-h4"]}>{TokenFields.hardCap.name}  (BTC)</h4>
+                <p className={s["info-p"]}>{parseFloat(this.state.record.hardCap)}</p>
               </Col>
             </Row>
             <Row>
@@ -198,18 +198,18 @@ class ViewToken extends React.Component {
                 <p className={s["info-p"]}>{TokenFields.fundEndDate.format(this.state.record.fundEndDate)}</p>
               </Col>
               <Col sm={4}>
-                <h4 className={s["info-h4"]}>Total Raised</h4>
-                <p className={s["info-p"]}>{this.state.record.totalRaised} BTC</p>
+                <h4 className={s["info-h4"]}>Total Raised (BTC)</h4>
+                <p className={s["info-p"]}>{this.state.record.totalRaised}</p>
               </Col>
             </Row>
             <Row>
               <Col sm={4}>
-                <h4 className={s["info-h4"]}>Your Token Balance</h4>
-                <p className={s["info-p"]}>{this.state.record.userTokenBalance} {this.state.record.tokenTicker}</p>
+                <h4 className={s["info-h4"]}>Your Token Balance ({this.state.record.tokenTicker})</h4>
+                <p className={s["info-p"]}>{this.state.record.userTokenBalance}</p>
               </Col>
               <Col sm={4}>
-                <h4 className={s["info-h4"]}>Your BTC Balance</h4>
-                <p className={s["info-p"]}>{this.state.userBTCBalance} BTC</p>
+                <h4 className={s["info-h4"]}>Your BTC Balance (BTC)</h4>
+                <p className={s["info-p"]}>{this.state.userBTCBalance}</p>
               </Col>
               <Col sm={4}>
                 <h4 className={s["info-h4"]}>Purchase More {`"${this.state.record.tokenName}"`}</h4>
