@@ -1,22 +1,22 @@
 pragma solidity ^0.4.18;
 
-import "../crowdsale/CappedCrowdsale.sol";
-import "../crowdsale/RefundableCrowdsale.sol";
-import "../token/MintableToken.sol";
+import "zeppelin-solidity/contracts/crowdsale/CappedCrowdsale.sol";
+import "zeppelin-solidity/contracts/crowdsale/RefundableCrowdsale.sol";
+import "zeppelin-solidity/contracts/token/MintableToken.sol";
 
 
 /**
- * @title DynamicCrowdsaleToken
+ * @title DynamicToken
  * @dev Very simple ERC20 Token that can be minted.
  * It is meant to be used in a crowdsale contract.
  */
-contract DynamicCrowdsaleToken is MintableToken {
+contract DynamicToken is MintableToken {
 
   string public name; // solium-disable-line uppercase
   string public symbol; // solium-disable-line uppercase
   uint8 public constant decimals = 18; // solium-disable-line uppercase
 
-  function DynamicCrowdsaleToken(string _name, string _symbol) public {
+  function DynamicToken(string _name, string _symbol) public {
     name = _name;
     symbol = _symbol;    
   }
@@ -53,7 +53,7 @@ contract DynamicCrowdsale is CappedCrowdsale, RefundableCrowdsale {
   }
 
   function createTokenContract() internal returns (MintableToken) {
-    return new DynamicCrowdsaleToken(tokenName, tokenSymbol);
+    return new DynamicToken(tokenName, tokenSymbol);
   }
 
 }
