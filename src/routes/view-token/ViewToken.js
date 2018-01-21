@@ -199,7 +199,7 @@ class ViewToken extends React.Component {
                 <p className={s["info-p"]}>{this.state.record.userTokenBalance} {this.state.record.tokenTicker}</p>
               </Col>
               <Col sm={4}>
-                <h4 className={s["info-h4"]}>Your BTC Balance {`"${this.state.record.tokenName}"`}</h4>
+                <h4 className={s["info-h4"]}>Your BTC Balance</h4>
                 <p className={s["info-p"]}>{this.state.userBTCBalance} BTC</p>
               </Col>
               <Col sm={4}>
