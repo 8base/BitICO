@@ -30,10 +30,7 @@ class Header extends React.Component {
               alt="ICOX-logo"
             />
           </Link>
-          <div className={s.banner}>
-            <h1 className={s.bannerTitle}>Smart contracts on Bitcoin</h1>
-            <p className={s.bannerDesc}>Use Bitcoin for your next ICO</p>
-          </div>
+
         </div>
       </div>
     );

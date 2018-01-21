@@ -12,16 +12,7 @@ import PropTypes from 'prop-types';
 import auth0 from 'auth0-js';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Register.css';
-
-const auth0Config = {
-  domain: 'icox.auth0.com',
-  clientID: 'r95U770a_EpMnBzUcvtT6b92cusI3A_7',
-  redirectUri: 'http://localhost:3000/callback',
-  audience: 'https://icox.auth0.com/api/v2/',
-  responseType: 'token id_token',
-  scope: 'openid email profile',
-  nonce: '12345',
-};
+import config from './../../config';
 
 class Register extends React.Component {
   static propTypes = {
@@ -30,7 +21,26 @@ class Register extends React.Component {
 
   constructor(props) {
     super(props);
-    this.auth = new auth0.WebAuth(auth0Config);
+    this.auth = new auth0.WebAuth(config.auth0);
+  }
+
+  componentDidMount() {
+
+    if (window.location.hash.length === 0) {
+      return;
+    }
+
+    const credentials = {};
+
+    window.location.hash.split(/&|#/).forEach((item) => {
+      if (item.indexOf("=") > -1) {
+        const keyPair = item.split('=');
+        credentials[keyPair[0]] = keyPair[1];
+      }
+    });
+
+    localStorage.setItem("icox_key", JSON.stringify(credentials));
+    window.location.pathname = "/admin";
   }
 
   login() {

@@ -31,7 +31,6 @@ const authUser = (req, res, next) => {
     const idToken = req.header("id_token");
     if (!idToken) {
       return next(new UnauthorizedError("id_token", { message: "Id token is missing" }));
-
     }
 
     const verify = new JWTVerify();
@@ -42,7 +41,6 @@ const authUser = (req, res, next) => {
       }
 
       req.user = await users.findOrCreateUser(data);
-
       next();
 
       return null;
