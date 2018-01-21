@@ -26,7 +26,7 @@ const checkJwt = jwt({
 });
 
 
-const fetchOrCreateUser = (req, res, next) => {
+const authUser = (req, res, next) => {
   checkJwt(req, res, async () => {
     const idToken = req.header("id_token");
     if (!idToken) {
@@ -51,4 +51,4 @@ const fetchOrCreateUser = (req, res, next) => {
 
 };
 
-export default fetchOrCreateUser;
+export default authUser;
