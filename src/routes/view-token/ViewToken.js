@@ -99,6 +99,8 @@ class ViewToken extends React.Component {
       )
     }
 
+    const totalMoney = parseFloat(this.state.record.hardCap);
+
     return (
 
       <div className={s.root}>
@@ -106,13 +108,10 @@ class ViewToken extends React.Component {
           <h1>{this.state.record.tokenName}</h1>
 
           <h4 className={s["info-h4"]}>Total Funding Raised</h4>
-          <LinearProgress mode="determinate" value={40} style={{height: "30px"}} />
+          <LinearProgress mode="determinate" value={parseFloat(this.state.record.totalRaised)/totalMoney} style={{height: "30px"}} />
 
-          <h4 className={s["info-h4"]}>Soft Cap Goal</h4>
-          <LinearProgress mode="determinate" value={40} style={{height: "20px"}} color="#219653" />
-
-          <h4 className={s["info-h4"]}>Hard Cap Raised</h4>
-          <LinearProgress mode="determinate" value={40} style={{height: "20px"}} color="#592877"/>
+          <h4 className={s["info-h4"]}>Soft Cap Raised</h4>
+          <LinearProgress mode="determinate" value={parseFloat(this.state.record.softCap)/totalMoney} style={{height: "40px"}} color="#592877"/>
 
           <Container>
             <Row>
