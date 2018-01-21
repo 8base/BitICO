@@ -36,6 +36,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'register' */ './register'),
     },
     {
+      path: '/list-tokens',
+      load: () => import(/* webpackChunkName: 'list-tokens' */ './list-tokens'),
+    },
+    {
       path: '/about',
       load: () => import(/* webpackChunkName: 'about' */ './about'),
     },
