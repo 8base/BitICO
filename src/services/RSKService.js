@@ -445,6 +445,7 @@ const DEFAULT_PASSPHRASE = "passphrase";
 
 // TODO: temporary hack, because of RSK whitelisitng
 const BANK_ADDRESS = "0x0e082742330d4a06ef127ca89f78f7283141c572";
+const BANK_PRIVATE_KEY = "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776";
 
 const toWei = etherValue => new BigNumber(etherValue).shift(WEI_DECIMAL_PLACES);
 
@@ -457,6 +458,9 @@ export default class RSKService {
 
     // TODO: this is hack to avoid signing transactions - NOT SECURE!    
     this.login(ownerAddress, ownerPrivateKey);  
+
+    this.web3.personal.importRawKey(BANK_PRIVATE_KEY, DEFAULT_PASSPHRASE);    
+    this.web3.personal.unlockAccount(BANK_ADDRESS, DEFAULT_PASSPHRASE);
   }
 
   login = (ownerAddress, ownerPrivateKey) => {
@@ -557,7 +561,7 @@ export default class RSKService {
 
   createAccount = async () => {    
     const account = await this.web3.personal.newAccount(DEFAULT_PASSPHRASE);
-    this.transferEther(BANK_ADDRESS, account, 1e-4);    
+    this.transferEther(BANK_ADDRESS, account, 1e-3);    
     return account;
   }
 
