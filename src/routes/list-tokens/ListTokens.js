@@ -26,7 +26,7 @@ class Admin extends React.Component {
   constructor(props) {
     super(props);
 
-    const tokenHeaders = TokenFields.map((t) => t.key);
+    const tokenHeaders = Object.keys(TokenFields);
 
     this.state = {
       headers: tokenHeaders,
@@ -66,7 +66,9 @@ class Admin extends React.Component {
 
     return (
       <div className={s.root}>
-        <Table>
+        <Table onRowSelection={(d)=> {
+          window.location.pathname = `/view-token/${this.state.records[d].id}`;
+        }}>
           <TableHeader>
             <TableRow>
               {
@@ -80,12 +82,11 @@ class Admin extends React.Component {
             {
               this.state.records.map((item) => (
                   <TableRow key={item.tokenTicker}>
-
-                    {
-                      this.state.headers.map((header) => (
-                          <TableRowColumn>{item[header]}</TableRowColumn>
+                      {
+                        this.state.headers.map((header) => (
+                          <TableRowColumn key={header}>{item[header]}</TableRowColumn>
                         ))
-                    }
+                      }
                   </TableRow>
                 ))
             }
