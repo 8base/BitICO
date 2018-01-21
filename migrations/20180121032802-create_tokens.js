@@ -45,10 +45,12 @@ module.exports = {
       },
 */
 
+/*
       allocation: {
         type: DataType.BIGINT,
         allowNull: false,
       },
+*/
 
       softCap: {
         type: DataType.BIGINT,

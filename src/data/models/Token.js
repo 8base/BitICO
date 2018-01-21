@@ -47,10 +47,12 @@ const Token = Model.define(
     },
 */
 
+/*
     allocation: {
       type: DataType.BIGINT,
       allowNull: false,
     },
+*/
 
     softCap: {
       type: DataType.BIGINT,
