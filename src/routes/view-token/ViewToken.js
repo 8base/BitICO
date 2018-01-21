@@ -14,6 +14,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {Row, Col, Container} from 'react-grid-system';
+import numeral from "numeral";
 
 import s from "./ViewToken.css";
 import TokenFields from './../../data/ui-models/TokenFields';
@@ -60,6 +61,11 @@ class ViewToken extends React.Component {
     clearTimeout(this.timer);
   }
 
+  onPurchaseInputChange (e) {
+    this.setState({
+      purchase: e.target.value
+    })
+  }
 
   progress(completed) {
     if (completed > 100) {
@@ -69,12 +75,6 @@ class ViewToken extends React.Component {
       const diff = Math.random() * 10;
       this.timer = setTimeout(() => this.progress(completed + diff), 1000);
     }
-  }
-
-  onPurchaseInputChange (e) {
-    this.setState({
-      purchase: e.target.value
-    })
   }
 
   makePurchase () {
@@ -90,7 +90,7 @@ class ViewToken extends React.Component {
       },
       data: {
         tokenId: parseInt(window.location.pathname.match(/\/(\d*)$/)[1], 10),
-        amount: parseFloat(this.state.purchase)
+        amount: numeral(this.state.purchase).value()
       }
     };
 
