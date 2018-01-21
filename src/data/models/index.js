@@ -13,7 +13,6 @@ import Purchase from './Purchase';
 
 
 const initRelations = () => {
-  console.log("here");
   User.hasMany(Token, {
     foreignKey: 'userId',
     as: 'tokens',
