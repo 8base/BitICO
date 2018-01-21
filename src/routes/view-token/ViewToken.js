@@ -197,6 +197,10 @@ class ViewToken extends React.Component {
                 <h4 className={s["info-h4"]}>{TokenFields.fundEndDate.name}</h4>
                 <p className={s["info-p"]}>{TokenFields.fundEndDate.format(this.state.record.fundEndDate)}</p>
               </Col>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>Total Raised</h4>
+                <p className={s["info-p"]}>{this.state.record.totalRaised} BTC</p>
+              </Col>
             </Row>
             <Row>
               <Col sm={4}>
