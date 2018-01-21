@@ -8,12 +8,14 @@
  */
 
 import Sequelize from 'sequelize';
-import config from '../config';
+import mySQLConfig from "../../config/mysql";
 
-const sequelize = new Sequelize(config.databaseUrl, {
-  define: {
-    freezeTableName: true,
-  },
-});
+
+const sequelize = new Sequelize(
+  mySQLConfig.database,
+  mySQLConfig.username,
+  mySQLConfig.password,
+  mySQLConfig,
+);
 
 export default sequelize;

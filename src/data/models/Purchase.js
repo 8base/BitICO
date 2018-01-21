@@ -10,8 +10,8 @@
 import DataType from 'sequelize';
 import Model from '../sequelize';
 
-const User = Model.define(
-  'User',
+const Purchase = Model.define(
+  'Purchase',
   {
     id: {
       type: DataType.INTEGER,
@@ -19,50 +19,30 @@ const User = Model.define(
       primaryKey: true,
     },
 
-    email: {
-      type: DataType.STRING(255),
-      validate: { isEmail: true },
+    userId: {
+      type: DataType.INTEGER,
       allowNull: false,
     },
 
-    fullName: {
-      type: DataType.STRING(255),
-    },
-
-    btcAddress: {
-      type: DataType.STRING(35),
-    },
-
-    btcPrivateKey: {
-      type: DataType.STRING(64),
-    },
-
-    rskAddress: {
-      type: DataType.STRING(40),
-    },
-
-    rskPrivateKey: {
-      type: DataType.STRING(64),
+    tokenId: {
+      type: DataType.INTEGER,
+      allowNull: false,
     },
 
     createdAt: {
       allowNull: false,
       type: DataType.DATE
     },
+
     updatedAt: {
       allowNull: false,
       type: DataType.DATE
     },
-    deletedAt: {
-      type: DataType.DATE
-    }
 
   },
   {
-    // indexes: [{ fields: ['email'] }],
     timestamps: true,
-    paranoid: true,
   },
 );
 
-export default User;
+export default Purchase;

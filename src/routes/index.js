@@ -28,8 +28,16 @@ const routes = {
       load: () => import(/* webpackChunkName: 'login' */ './login'),
     },
     {
+      path: '/callback',
+      load: () => import(/* webpackChunkName: 'register' */ './admin'),
+    },
+    {
       path: '/register',
       load: () => import(/* webpackChunkName: 'register' */ './register'),
+    },
+    {
+      path: '/list-tokens',
+      load: () => import(/* webpackChunkName: 'list-tokens' */ './list-tokens'),
     },
     {
       path: '/about',

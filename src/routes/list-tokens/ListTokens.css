@@ -7,17 +7,9 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import DataType from 'sequelize';
-import Model from '../sequelize';
+@import '../../components/variables.css';
 
-const UserClaim = Model.define('UserClaim', {
-  type: {
-    type: DataType.STRING,
-  },
-
-  value: {
-    type: DataType.STRING,
-  },
-});
-
-export default UserClaim;
+.root {
+  padding-left: 20px;
+  padding-right: 20px;
+}

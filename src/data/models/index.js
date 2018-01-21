@@ -7,18 +7,24 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import sequelize from '../sequelize';
 import User from './User';
-import UserLogin from './UserLogin';
-import UserClaim from './UserClaim';
-import UserProfile from './UserProfile';
+import Token from './Token';
+import Purchase from './Purchase';
 
-User.hasMany(UserLogin, {
-  foreignKey: 'userId',
-  as: 'logins',
-  onUpdate: 'cascade',
-  onDelete: 'cascade',
-});
+
+const initRelations = () => {
+  console.log("here");
+  User.hasMany(Token, {
+    foreignKey: 'userId',
+    as: 'tokens',
+  });
+
+  User.belongsToMany(Token, {
+    through: Purchase
+  });
+};
+
+/*
 
 User.hasMany(UserClaim, {
   foreignKey: 'userId',
@@ -33,10 +39,13 @@ User.hasOne(UserProfile, {
   onUpdate: 'cascade',
   onDelete: 'cascade',
 });
+*/
 
+/*
 function sync(...args) {
   return sequelize.sync(...args);
 }
+*/
 
-export default { sync };
-export { User, UserLogin, UserClaim, UserProfile };
+export default { initRelations };
+export { User, Token };

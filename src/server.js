@@ -11,9 +11,7 @@ import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
-import expressGraphQL from 'express-graphql';
-import jwt from 'jsonwebtoken';
+import { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import fetch from 'node-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -23,12 +21,12 @@ import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 import createFetch from './createFetch';
-import passport from './passport';
 import router from './router';
 import models from './data/models';
-import schema from './data/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
+import authUser from "./services/auth";
+import {allTokens, createToken, myTokens} from "./services/tokens"
 
 const app = express();
 
@@ -50,6 +48,7 @@ app.use(bodyParser.json());
 //
 // Authentication
 // -----------------------------------------------------------------------------
+/*
 app.use(
   expressJwt({
     secret: config.auth.jwt.secret,
@@ -57,6 +56,7 @@ app.use(
     getToken: req => req.cookies.id_token,
   }),
 );
+*/
 // Error handler for express-jwt
 app.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
@@ -68,11 +68,12 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-//app.use(passport.initialize());
+// app.use(passport.initialize());
 
 if (__DEV__) {
   app.enable('trust proxy');
 }
+/*
 app.get(
   '/login/facebook',
   passport.authenticate('facebook', {
@@ -93,6 +94,20 @@ app.get(
     res.redirect('/');
   },
 );
+*/
+
+
+
+app.get("/test", authUser, (req, res) => {
+  res.send("asd");
+});
+
+
+app.post("/token/create", authUser, createToken);
+app.get("/tokens", authUser, allTokens);
+app.get("/my-tokens", authUser, myTokens);
+
+// app.use(checkJwt);
 
 const RSKTest = () => {
   var now = new Date();
@@ -135,15 +150,31 @@ app.get('/test', async (req, res, next) => {
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
-app.use(
+/* app.post(
   '/graphql',
-  expressGraphQL(req => ({
-    schema,
-    graphiql: __DEV__,
-    rootValue: { request: req },
-    pretty: __DEV__,
-  })),
-);
+  checkJwt,
+  expressGraphQL(async req =>  {
+      const idToken = req.headers.id_token;
+
+      const verify = new JWTVerify();
+      await verify.updateKeys();
+      verify.validate(idToken, (err, data) => {
+        console.log("err = ", err);
+        console.log("data = ", data);
+
+      });
+
+      return {
+        schema,
+        graphiql: __DEV__,
+        rootValue: { request: req },
+        pretty: __DEV__,
+      }
+    },
+  )
+); */
+
+
 
 
 //
@@ -181,9 +212,13 @@ app.get('*', async (req, res, next) => {
     }
 
     const data = { ...route };
+
     data.children = ReactDOM.renderToString(
+
       <App context={context}>{route.component}</App>,
+
     );
+
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
     data.scripts = [assets.vendor.js];
     if (route.chunks) {
@@ -202,6 +237,8 @@ app.get('*', async (req, res, next) => {
   }
 });
 
+
+
 //
 // Error handling
 // -----------------------------------------------------------------------------
@@ -218,7 +255,7 @@ app.use((err, req, res, next) => {
       description={err.message}
       styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]} // eslint-disable-line no-underscore-dangle
     >
-      {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
+    {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
     </Html>,
   );
   res.status(err.status || 500);
@@ -228,13 +265,19 @@ app.use((err, req, res, next) => {
 //
 // Launch the server
 // -----------------------------------------------------------------------------
-const promise = models.sync().catch(err => console.error(err.stack));
+// const promise = models.sync().catch(err => console.error(err.stack));
+models.initRelations();
 if (!module.hot) {
+  app.listen(config.port, () => {
+    console.info(`The server is running at http://localhost:${config.port}/`);
+  });
+/*
   promise.then(() => {
     app.listen(config.port, () => {
       console.info(`The server is running at http://localhost:${config.port}/`);
     });
   });
+*/
 }
 
 //
