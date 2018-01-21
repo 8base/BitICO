@@ -55,8 +55,13 @@ class ViewToken extends React.Component {
     })
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.timer);
+  componentWillMount() {
+
+    setInterval(()=>{
+      this.getTokenBalance();
+      this.getUserBTCBalance();
+    }, 5000);
+
   }
 
   onPurchaseInputChange (e) {
@@ -65,7 +70,28 @@ class ViewToken extends React.Component {
     })
   }
 
-  getUserBalance() {
+  getTokenBalance () {
+
+    const credentials = JSON.parse(localStorage.getItem("icox_key"));
+    const id = parseInt(window.location.pathname.match(/(\d*)$/)[1], 10);
+
+    const params = {
+      method: 'GET',
+      url: `/fetch-balance/token/${id}`,
+      headers: {
+        authorization: `Bearer ${credentials.access_token}`,
+        id_token: credentials.id_token,
+      }
+    };
+
+    axios(params).then(response => {
+      console.log("Token Balance", response);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  getUserBTCBalance () {
 
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
 
@@ -79,7 +105,7 @@ class ViewToken extends React.Component {
     };
 
     axios(params).then(response => {
-      console.log(response);
+      console.log("BTC Balance ", response);
     }).catch(error => {
       console.log(error);
     })
@@ -124,7 +150,7 @@ class ViewToken extends React.Component {
 
       <div className={s.root}>
         <div className={s.container}>
-          <h1>{this.state.record.tokenName}</h1>
+          <h1>{this.state.record.tokenName} ({this.state.record.tokenTicker})</h1>
 
           <h4 className={s["info-h4"]}>Total Funding Raised</h4>
           <LinearProgress mode="determinate" value={parseFloat(this.state.record.totalRaised)/totalMoney} style={{height: "30px"}} />
@@ -160,7 +186,7 @@ class ViewToken extends React.Component {
             <Row>
               <Col sm={4}>
                 <h4 className={s["info-h4"]}>Your Current Balance</h4>
-                <p className={s["info-p"]}>${this.state.record.userTokenBalance}</p>
+                <p className={s["info-p"]}>{this.state.record.userTokenBalance} {this.state.record.tokenTicker}</p>
               </Col>
               <Col sm={4}>
                 <h4 className={s["info-h4"]}>Purchase More</h4>
