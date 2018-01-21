@@ -27,6 +27,7 @@ import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
 import authUser from "./services/auth";
 import {allTokens, createToken, myTokens, purchaseToken, tokenById} from "./services/tokens"
+import {uploadFile, uploadMulter} from "./services/files";
 
 const app = express();
 
@@ -95,22 +96,24 @@ app.get(
   },
 );
 */
+app.use("/files", express.static('files'));
 
 app.post("/token/create", authUser, createToken);
 app.get("/tokens", authUser, allTokens);
 app.get("/my-tokens", authUser, myTokens);
 app.get("/token/:tokenId", authUser, tokenById);
 app.post("/token/:tokenId/purchase/:amount", authUser, purchaseToken);
+app.post("/file/upload", authUser, uploadMulter.single('file'), uploadFile);
 
 // app.use(checkJwt);
 
 const RSKTest = () => {
-  var now = new Date();
-  var RSKService = require('./services/RSKService').default;
+  const now = new Date();
+  const RSKService = require('./services/RSKService').default;
   console.log("starting...");
-  var rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
+  const rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
   console.log("rskService done");
-  /*var crowdsaleInstance = await rskService.deployCrowdsale({
+  /* var crowdsaleInstance = await rskService.deployCrowdsale({
     tokenName: "My Token",
     tokenSymbol: "TKN",
     startTime: new Date(now.getTime() + 30 * 1000),
@@ -123,12 +126,12 @@ const RSKTest = () => {
       console.log("Contract sent");
     },
   });
-  console.log('Mined: ', crowdsaleInstance.address);*/
+  console.log('Mined: ', crowdsaleInstance.address); */
   rskService.loadCrowdsaleAt("0x143e692b0f131a0fa173705858b734e5527502c9");
-  //console.log(rskService.token);
+  // console.log(rskService.token);
   // console.log(rskService.buyTokens("0x0e082742330d4a06ef127ca89f78f7283141c572", 1e-18));
   console.log(rskService.tokenBalance("0x0e082742330d4a06ef127ca89f78f7283141c572"));
-  //console.log("account: ", personal.newAccount("passphrase"));
+  // console.log("account: ", personal.newAccount("passphrase"));
 }
 
 const BTCTest = () => {
