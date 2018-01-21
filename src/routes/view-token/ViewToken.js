@@ -11,6 +11,7 @@ import React from 'react';
 import axios from 'axios';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import {Row, Col, Container} from 'react-grid-system';
 import numeral from "numeral";
@@ -75,15 +76,16 @@ class ViewToken extends React.Component {
     axios(params).then(response => {
 
       console.log("Token Balance", response);
+
       const record = response.data.data || {};
 
       const o = {
         record: record
       };
 
-      if (this.state.lastBalance !== response.data.data.userTokenBalance && this.state.open) {
-        this.handleClose();
-        o.lastBalance = response.data.data.userTokenBalance;
+
+      if (this.lastTokenBalance !== response.data.data.userTokenBalance && this.state.open) {                
+        this.handleClose();        
       }
 
       this.setState(o);
@@ -152,6 +154,7 @@ class ViewToken extends React.Component {
   makePurchase () {
 
     this.handleOpen();
+    this.lastTokenBalance = this.state.record.userTokenBalance;
 
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
 

@@ -101,7 +101,7 @@ const tokenById = async (req, res) => {
   const rskService = new RSKService(user.rskAddress);
   rskService.loadCrowdsaleAt(token.crowdsaleRskAddress);
   const totalRaised = rskService.totalTokensRaised();
-  const userTokenBalance = rskService.tokenBalance(user.rskAddress);
+  const userTokenBalance = rskService.tokenBalance(user.rskAddress);  
   token = token.toJSON();
   token["totalRaised"] = totalRaised.toString(10);
   token["userTokenBalance"] = userTokenBalance.toString(10);
@@ -125,8 +125,9 @@ const purchaseToken = async (req, res) => {
     const rskService = new RSKService(user.rskAddress);
     const btcService = new BTCService();
 
+    console.log("amount", amount);
     rskService.loadCrowdsaleAt(token.crowdsaleRskAddress);
-    await btcService.buyTokens(user.btcAddress, user.rskAddress, amount, rskService);
+    console.log("buyTokens", await btcService.buyTokens(user.btcAddress, user.rskAddress, amount, rskService));
 
   } catch ( e ) {
     console.log("e = ", e);
@@ -173,7 +174,7 @@ const fetchBtcBalance = async (req, res) => {
 
   const btcService = new BTCService();
 
-  const result = btcService.getBalance(user.btcAddress, 0);
+  const result = await btcService.getBalance(user.btcAddress, 0);
 
   res.json({
     success: true,

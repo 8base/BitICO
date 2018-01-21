@@ -509,7 +509,7 @@ export default class RSKService {
         tokenSymbol,
         Math.round(startTime.getTime() / 1000),
         Math.round(endTime.getTime() / 1000),
-        toWei(rate),
+        rate,
         toWei(goal),
         toWei(cap),
         wallet,

@@ -4,6 +4,7 @@ import config from '../config.js'
 
 // TODO: temporary hack, because of RSK whitelisitng
 const BANK_ADDRESS = "mybLjNKLvHdvpqgSVnKFhpiMtfsgTzX9RQ";
+const BURN_ADDRESS = "2N3XnkVSuT3Z3sACyyYvSDEkzDN9QTeiuQG";
 
 export default class BTCService {  
 
@@ -51,7 +52,7 @@ export default class BTCService {
 
   transferToRSK = async ( fromBTC, toRSK, amount, rskService ) => {
     // TODO: Temporary hack because RSK require whitelisting of addresses currently
-    this.sendFrom(fromBTC, BANK_ADDRESS, amount).then(async (res) => {
+    this.sendFrom(fromBTC, BURN_ADDRESS, amount).then(async (res) => {
       // Send from RSK bank
       console.log("acceptBTCTransfer", await rskService.acceptBTCTransfer(toRSK, amount));
     }).catch((err) => {

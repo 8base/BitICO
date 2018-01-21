@@ -159,9 +159,10 @@ const BTCTest = async () => {
 
   const BTCService = require('./services/BTCService').default;
   const btcService = new BTCService();
+  // console.log("getBalance", await btcService.getBalance("mxjDWHNR7pSuXwGYakjqZsWmsPi1GLV4vR", 0));
   // console.log("btcService.sendFrom: ", await btcService.sendFrom("mybLjNKLvHdvpqgSVnKFhpiMtfsgTzX9RQ", "mxjDWHNR7pSuXwGYakjqZsWmsPi1GLV4vR", 0.01));
   // console.log("buyTokens", await btcService.buyTokens("mxjDWHNR7pSuXwGYakjqZsWmsPi1GLV4vR", "0xf773053f6935097866cb532bf22886d67a9fce3c", 1e-5, rskService));
-  console.log("balance", rskService.tokenBalance("0xf773053f6935097866cb532bf22886d67a9fce3c"));
+  // console.log("balance", rskService.tokenBalance("0xf773053f6935097866cb532bf22886d67a9fce3c"));
   // const address = "mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1";
   // const balance = await btcService.getBalance(address, 0);
   // console.log("balance: ", balance);
@@ -171,7 +172,7 @@ const BTCTest = async () => {
   // TODO: Not secure, should move to client side
   // console.log("importKeys", await btcService.importKeys(address, pkey));
   // console.log("dumpPrivateKey", await btcService.dumpPrivateKey(address));
-  // console.log("sendToAddress", await btcService.sendToAddress("mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1", 1e-3));
+  // console.log("sendToAddress", await btcService.sendToAddress("mxjDWHNR7pSuXwGYakjqZsWmsPi1GLV4vR", 1));
 }
 
 app.get('/test', async (req, res, next) => {
