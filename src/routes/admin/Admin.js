@@ -81,7 +81,12 @@ class Admin extends React.Component {
       }
     };
 
-    axios(params).then(() => this.handleClose());
+    axios(params).then(() => {
+      this.handleClose();
+      setTimeout(() => {
+        window.location.pathname = "/list-tokens";
+      }, 150);
+    });
   }
 
 
@@ -129,8 +134,6 @@ class Admin extends React.Component {
 
   render() {
     let dropzoneRef;
-
-
 
     return (
       <div className={s.root}>
