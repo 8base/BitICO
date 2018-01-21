@@ -1,5 +1,6 @@
 import Token from "../data/models/Token";
 import RSKService from "./RSKService";
+import BTCService from "./BTCService";
 
 const createToken = async (req, res) => {
 //    console.log("req.user = ", req.user);
@@ -106,6 +107,7 @@ const tokenById = async (req, res) => {
 
 const purchaseToken = async (req, res) => {
   const { tokenId, amount } = req.params;
+  const { user } = req;
 
   console.log("tokenId = ", tokenId, "amount = ", amount);
 
@@ -113,6 +115,12 @@ const purchaseToken = async (req, res) => {
 
   try {
     await req.user.addPurchase(token);
+    const rskService = new RSKService(user.rskAddress);
+    const btcService = new BTCService();
+
+    rskService.loadCrowdsaleAt(token.crowdsaleRskAddress);
+    await btcService.buyTokens(user.btcAddress, user.rskAddress, amount, rskService);
+
   } catch ( e ) {
     console.log("e = ", e);
   }
@@ -134,4 +142,22 @@ const purchaseToken = async (req, res) => {
 
 };
 
-export { createToken, allTokens, myTokens, tokenById, purchaseToken }
+const fetchBalance = async (req, res) => {
+  const { tokenId } = req.params;
+  const { user } = req;
+  const rskService = new RSKService(user.rskAddress);
+
+  const token = await Token.findById(tokenId);
+
+  rskService.loadCrowdsaleAt(token.crowdsaleRskAddress);
+
+  const result = rskService.tokenBalance(user.rskAddress);
+
+  res.json({
+    success: true,
+    data: result
+  });
+
+};
+
+export { createToken, allTokens, myTokens, tokenById, purchaseToken, fetchBalance }

@@ -109,6 +109,7 @@ app.get("/tokens", authUser, allTokens);
 app.get("/my-tokens", authUser, myTokens);
 app.get("/token/:tokenId", authUser, tokenById);
 app.post("/token/:tokenId/purchase/:amount", authUser, purchaseToken);
+app.get("/fetch-balance/token/:tokenId", authUser, purchaseToken);
 app.post("/file/upload", authUser, uploadMulter.single('file'), uploadFile);
 
 // app.use(checkJwt);
@@ -124,7 +125,7 @@ const RSKTest = () => {
     tokenName: "My Token",
     tokenSymbol: "TKN",
     startTime: new Date(now.getTime() + 30 * 1000),
-    endTime: new Date(2018, 2, 0), 
+    endTime: new Date(2018, 2, 0),
     rate: 2,
     goal: 10e-18, // in BTC
     cap: 20e-18, // in BTC
@@ -138,7 +139,7 @@ const RSKTest = () => {
   // console.log('Token: ', crowdsaleInstance.address);*/
   // rskService.loadCrowdsaleAt("0xdf05a424f3903ae6f1ecf69497a6a10601dc94c9");
   // console.log(rskService.token);
-  // console.log(rskService.buyTokens("0x0e082742330d4a06ef127ca89f78f7283141c572", 7e-18));  
+  // console.log(rskService.buyTokens("0x0e082742330d4a06ef127ca89f78f7283141c572", 7e-18));
   // console.log(rskService.tokenBalance("0x0e082742330d4a06ef127ca89f78f7283141c572"));
   // console.log("rsk.crowdsale.weiRaised(): ", rskService.crowdsale.weiRaised());
   // console.log("rsk.crowdsale.goalReached(): ", rskService.crowdsale.goalReached());
@@ -150,7 +151,7 @@ const BTCTest = async () => {
   var RSKService = require('./services/RSKService').default;
   var rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
   console.log("rskService done");
-  
+
   var BTCService = require('./services/BTCService').default;
   const btcService = new BTCService();
   // const address = "mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1";
