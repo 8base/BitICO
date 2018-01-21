@@ -10,14 +10,17 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
+import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
 import axios from "axios";
 import Dropzone from 'react-dropzone';
+import numeral from "numeral";
 import fields from "./../../data/ui-models/TokenFields";
 
 import s from './Admin.css';
-import numeral from "numeral";
 
 const fieldsAsArray = Object.keys(fields).map(k => fields[k]);
 
@@ -65,7 +68,9 @@ class Admin extends React.Component {
       }
     });
 
-    axios({
+    this.handleOpen();
+
+    const params = {
       method: 'post',
       url: '/token/create',
       data: body,
@@ -74,7 +79,9 @@ class Admin extends React.Component {
         authorization: `Bearer ${credentials.access_token}`,
         id_token: credentials.id_token,
       }
-    }).then(response => alert("done"));
+    };
+
+    axios(params).then(() => this.handleClose());
   }
 
 
@@ -85,9 +92,7 @@ class Admin extends React.Component {
 
 
     if (fields[key].key === key && fields[key].validation) {
-
-      const testErr = fields[key].validation(val);
-      obj[`${key}_error`] = testErr;
+      obj[`${key}_error`] = fields[key].validation(val);
     }
 
     this.setState(obj);
@@ -107,8 +112,15 @@ class Admin extends React.Component {
         id_token: credentials.id_token,
       }
     }).then(response => this.uploadSuccess(response));
-
   }
+
+  handleOpen = () => {
+    this.setState({open: true});
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
 
   uploadSuccess({ data }) {
     this.handleChange("tokenLogo", data.data.filename);
@@ -117,6 +129,9 @@ class Admin extends React.Component {
 
   render() {
     let dropzoneRef;
+
+
+
     return (
       <div className={s.root}>
         <Dropzone ref={(node) => { dropzoneRef = node; }} onDrop={(accepted) => this.handleFileUpload(accepted)} style={{display: "none"}} />
@@ -169,6 +184,23 @@ class Admin extends React.Component {
             onClick={() => this.handleSubmit()}
           />
         </form>
+        <Dialog
+          title="Please Wait"
+          actions={[
+            <FlatButton
+              label="Ok Got It"
+              primary
+              onClick={this.handleClose}
+            />
+          ]}
+          titleStyle={{textAlign: "center"}}
+          modal
+          open={this.state.open}
+          bodyStyle={{textAlign: "center", fontSize: "1.2em"}}
+        >
+          <CircularProgress size={85} thickness={10} /><br/><br/>
+          We are creating token and mining the contract, and this process may take a while.  Please wait.
+        </Dialog>
       </div>
     );
   }
