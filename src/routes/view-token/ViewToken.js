@@ -10,12 +10,11 @@
 import React from 'react';
 import axios from 'axios';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import LinearProgress from 'material-ui/LinearProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {Row, Col, Container} from 'react-grid-system';
 import numeral from "numeral";
-
+import LinearProgress from 'material-ui/LinearProgress';
 import s from "./ViewToken.css";
 import TokenFields from './../../data/ui-models/TokenFields';
 
@@ -34,8 +33,6 @@ class ViewToken extends React.Component {
 
   componentDidMount () {
 
-    this.timer = setTimeout(() => this.progress(5), 1000);
-
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
     const id = parseInt(window.location.pathname.match(/(\d*)$/)[1], 10);
 
@@ -52,6 +49,7 @@ class ViewToken extends React.Component {
 
       const record = response.data.data || {};
       this.setState({record})
+
     }).catch(error => {
       console.log(error);
     })
@@ -67,15 +65,6 @@ class ViewToken extends React.Component {
     })
   }
 
-  progress(completed) {
-    if (completed > 100) {
-      this.setState({completed: 100});
-    } else {
-      this.setState({completed});
-      const diff = Math.random() * 10;
-      this.timer = setTimeout(() => this.progress(completed + diff), 1000);
-    }
-  }
 
   makePurchase () {
 
@@ -90,8 +79,6 @@ class ViewToken extends React.Component {
       },
     };
 
-    console.log(params)
-
     axios(params).then(response => {
       console.log(response)
     }).catch(error => {
@@ -103,8 +90,11 @@ class ViewToken extends React.Component {
 
     if (!this.state.record.tokenName) {
       return (
-        <div>
-          Loading
+        <div className={s.root}>
+          <div className={s.container}>
+          <h4 className={s["info-h4"]}>Total Funding Raised</h4>
+          <p className={s["info-p"]}>Loading</p>
+          </div>
         </div>
       )
     }
@@ -115,7 +105,14 @@ class ViewToken extends React.Component {
         <div className={s.container}>
           <h1>{this.state.record.tokenName}</h1>
 
-          <LinearProgress mode="determinate" value={this.state.completed} />
+          <h4 className={s["info-h4"]}>Total Funding Raised</h4>
+          <LinearProgress mode="determinate" value={40} style={{height: "30px"}} />
+
+          <h4 className={s["info-h4"]}>Soft Cap Goal</h4>
+          <LinearProgress mode="determinate" value={40} style={{height: "20px"}} color="#219653" />
+
+          <h4 className={s["info-h4"]}>Hard Cap Raised</h4>
+          <LinearProgress mode="determinate" value={40} style={{height: "20px"}} color="#592877"/>
 
           <Container>
             <Row>
