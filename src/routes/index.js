@@ -29,7 +29,7 @@ const routes = {
     },
     {
       path: '/callback',
-      load: () => import(/* webpackChunkName: 'register' */ './register'),
+      load: () => import(/* webpackChunkName: 'register' */ './admin'),
     },
     {
       path: '/register',
