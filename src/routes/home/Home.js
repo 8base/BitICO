@@ -8,6 +8,7 @@
  */
 
 import React from 'react';
+import RaisedButton from "material-ui/RaisedButton";
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
 
@@ -15,13 +16,13 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className={s.root}>
+      <div>
         <div className={s.banner}>
-          <h1 className={s.bannerTitle}>Smart contracts on Bitcoin</h1>
-          <p className={s.bannerDesc}>Use Bitcoin for your next ICO</p>
-        </div>
-        <div className={s.container}>
-          <h1>React.js News</h1>
+          <h1 className={s.bannerTitle}>Start Your Own ICO</h1>
+          <p className={s.bannerDesc}>Using the power of Bitcoin</p>
+          <a href="/login">
+            <RaisedButton label="Get Started" secondary style={{marginTop:"0.5em"}}/>
+          </a>
         </div>
       </div>
     );

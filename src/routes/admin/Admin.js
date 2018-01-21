@@ -33,28 +33,63 @@ const fields = [
     key: 'tokenTicker',
     example: 'Ex: COI',
     type: 'text',
+    validation: (text) => {
+      if (/^[^a-z]*$/.test(text)) {
+        return "";
+      }
+
+      return "Must be an all caps string";
+    },
   },
   {
     name: 'Total Supply',
     key: 'totalSupply',
     example: 'Ex: 1,000,000',
     type: 'number',
+    validation: (text) => {
+      if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
+        return "";
+      }
+
+      return "Must a number without decimals (commas optional but must be properly formatted)";
+    },
   },
   {
     name: 'Allocation',
     key: 'allocation',
     example: 'Ex: 300,000',
     type: 'number',
+    validation: (text) => {
+      if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
+        return "";
+      }
+
+      return "Must a number without decimals (commas optional but must be properly formatted)";
+    },
   },
   {
     name: 'Soft Cap',
     key: 'softCap',
     type: 'number',
+    validation: (text) => {
+      if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
+        return "";
+      }
+
+      return "Must a number without decimals (commas optional but must be properly formatted)";
+    },
   },
   {
     name: 'Hard Cap',
     key: 'hardCap',
     type: 'number',
+    validation: (text) => {
+      if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
+        return "";
+      }
+
+      return "Must a number without decimals (commas optional but must be properly formatted)";
+    },
   },
   {
     name: 'Fund Start Date',
@@ -82,6 +117,7 @@ class Admin extends React.Component {
 
     fields.forEach(f => {
       this.state[f.key] = '';
+      this.state[`${f.key  }_error`] = '';
     });
 
     this.handleChange = this.handleChange.bind(this);
@@ -130,9 +166,24 @@ class Admin extends React.Component {
   }
 
 
-  handleChange(key, val) {
+  handleChange (key, val) {
+
     const obj = {};
     obj[key] = val;
+
+    for (let i = 0; i < fields.length; i += 1) {
+
+      const field = fields[i];
+
+      if (field.key === key && field.validation) {
+
+        const testErr = field.validation(val);
+        obj[`${key}_error`] = testErr;
+        break;
+      }
+
+    }
+
     this.setState(obj);
   }
 
@@ -161,6 +212,7 @@ class Admin extends React.Component {
                     hintText={f.example || f.name}
                     floatingLabelText={f.name}
                     onChange={(e, n) => this.handleChange(f.key, n)}
+                    errorText={this.state[`${f.key}_error`]}
                   />
                   :
                   null
