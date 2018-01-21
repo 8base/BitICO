@@ -18,13 +18,15 @@ import fields from "./../../data/ui-models/TokenFields";
 
 import s from './Admin.css';
 
+const fieldsAsArray = Object.keys(fields).map(k => fields[k])
+
 class Admin extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {};
 
-    fields.forEach(f => {
+    Object.keys(fields).forEach(f => {
       this.state[f.key] = '';
       this.state[`${f.key  }_error`] = '';
     });
@@ -79,17 +81,11 @@ class Admin extends React.Component {
     const obj = {};
     obj[key] = val;
 
-    for (let i = 0; i < fields.length; i += 1) {
 
-      const field = fields[i];
+    if (fields[key].key === key && fields[key].validation) {
 
-      if (field.key === key && field.validation) {
-
-        const testErr = field.validation(val);
-        obj[`${key}_error`] = testErr;
-        break;
-      }
-
+      const testErr = fields[key].validation(val);
+      obj[`${key}_error`] = testErr;
     }
 
     this.setState(obj);
@@ -124,21 +120,9 @@ class Admin extends React.Component {
         <Dropzone ref={(node) => { dropzoneRef = node; }} onDrop={(accepted) => this.handleFileUpload(accepted)} style={{display: "none"}} />
         <form onSubmit={() => this.handleSubmit()} className={s.container}>
 
-          <h1>
-            List Tokens
-          </h1>
-
-          <a href="/list-tokens">
-            <RaisedButton
-              label="List Tokens"
-              secondary
-            />
-          </a>
-
-
           <h1>Create Custom Token</h1>
 
-          {fields.map(f => (
+          {fieldsAsArray.map(f => (
             <fieldset key={f.name}>
 
               {

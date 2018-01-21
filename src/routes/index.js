@@ -40,6 +40,10 @@ const routes = {
       load: () => import(/* webpackChunkName: 'list-tokens' */ './list-tokens'),
     },
     {
+      path: '/view-token/(.*)',
+      load: () => import(/* webpackChunkName: 'view-token' */ './view-token'),
+    },
+    {
       path: '/about',
       load: () => import(/* webpackChunkName: 'about' */ './about'),
     },
