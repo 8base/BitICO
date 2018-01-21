@@ -33,6 +33,19 @@ class ViewToken extends React.Component {
 
   componentDidMount () {
 
+    setInterval(()=>{
+      this.getCurrencyTokenData();
+      this.getUserBTCBalance();
+    }, 5000);
+  }
+
+  onPurchaseInputChange (e) {
+    this.setState({
+      purchase: e.target.value
+    })
+  }
+
+  getCurrencyTokenData () {
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
 
     const id = parseInt(window.location.pathname.match(/(\d*)$/)[1], 10);
@@ -48,25 +61,16 @@ class ViewToken extends React.Component {
 
     axios(params).then(response => {
 
+      console.log("Token Balance", response);
       const record = response.data.data || {};
-      this.setState({record})
+      this.setState({record});
 
     }).catch(error => {
       console.log(error);
     });
-
-    setInterval(()=>{
-      this.getTokenBalance();
-      this.getUserBTCBalance();
-    }, 5000);
   }
 
-  onPurchaseInputChange (e) {
-    this.setState({
-      purchase: e.target.value
-    })
-  }
-
+  /*
   getTokenBalance () {
 
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
@@ -95,6 +99,7 @@ class ViewToken extends React.Component {
       console.log(error);
     })
   }
+  */
 
   getUserBTCBalance () {
 
