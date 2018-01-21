@@ -15,6 +15,7 @@ import TextField from 'material-ui/TextField';
 import {Row, Col, Container} from 'react-grid-system';
 import numeral from "numeral";
 import LinearProgress from 'material-ui/LinearProgress';
+import CircularProgress from 'material-ui/CircularProgress';
 import s from "./ViewToken.css";
 import TokenFields from './../../data/ui-models/TokenFields';
 
@@ -28,6 +29,7 @@ class ViewToken extends React.Component {
       record: {},
       purchase: "",
       userBTCBalance: "",
+      open: false,
     }
   }
 
@@ -44,6 +46,15 @@ class ViewToken extends React.Component {
       purchase: e.target.value
     })
   }
+
+  handleOpen = () => {
+    this.setState({open: true});
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
 
   getCurrencyTokenData () {
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
@@ -128,6 +139,8 @@ class ViewToken extends React.Component {
 
   makePurchase () {
 
+    this.handleOpen();
+
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
 
     const params = {
@@ -141,7 +154,9 @@ class ViewToken extends React.Component {
 
     axios(params).then(response => {
       console.log(response)
+      this.handleClose();
     }).catch(error => {
+      this.handleClose();
       console.log(error);
     })
   }
@@ -222,6 +237,23 @@ class ViewToken extends React.Component {
                 <RaisedButton label="Purchase" primary onClick={()=> this.makePurchase()} style={{textTransform:'capitalize'}} />
               </Col>
             </Row>
+            <Dialog
+              title="Please Wait"
+              actions={[
+                <FlatButton
+                  label="Ok Got It"
+                  primary
+                  onClick={this.handleClose}
+                />
+              ]}
+              titleStyle={{textAlign: "center"}}
+              modal
+              open={this.state.open}
+              bodyStyle={{textAlign: "center", fontSize: "1.2em"}}
+            >
+              <CircularProgress size={85} thickness={10} /><br/><br/>
+              We are processing your transaction.
+            </Dialog>
           </Container>
         </div>
       </div>
