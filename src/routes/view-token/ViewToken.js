@@ -26,9 +26,8 @@ class ViewToken extends React.Component {
 
     this.state = {
       record: {},
-      completed: 0,
       purchase: "",
-      credentials: {}
+      userBTCBalance: "",
     }
   }
 
@@ -83,6 +82,14 @@ class ViewToken extends React.Component {
     };
 
     axios(params).then(response => {
+
+      const record = this.state.record;
+      record.userTokenBalance = parseFloat(response.data.data);
+
+      this.setState({
+        record: record
+      });
+
       console.log("Token Balance", response);
     }).catch(error => {
       console.log(error);
@@ -199,6 +206,9 @@ class ViewToken extends React.Component {
                   onChange={(e) => {this.onPurchaseInputChange(e)}}
                 />
                 <RaisedButton label="Purchase" primary onClick={()=> this.makePurchase()} style={{textTransform:'capitalize'}} />
+
+                <h4 className={s["info-h4"]}>Your Balance {`"${this.state.record.tokenName}"`}</h4>
+                <p className={s["info-p"]}>{this.state.userBTCBalance} BTC</p>
               </Col>
             </Row>
           </Container>
