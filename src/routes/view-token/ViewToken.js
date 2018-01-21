@@ -83,15 +83,11 @@ class ViewToken extends React.Component {
 
     const params = {
       method: 'POST',
-      url: `/buy`,
+      url: `/token/${this.state.record.id}/purchase/${numeral(this.state.purchase).value()}`,
       headers: {
         authorization: `Bearer ${credentials.access_token}`,
         id_token: credentials.id_token,
       },
-      data: {
-        tokenId: parseInt(window.location.pathname.match(/\/(\d*)$/)[1], 10),
-        amount: numeral(this.state.purchase).value()
-      }
     };
 
     console.log(params)
