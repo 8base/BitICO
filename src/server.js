@@ -74,6 +74,12 @@ app.use((err, req, res, next) => {
 if (__DEV__) {
   app.enable('trust proxy');
 }
+
+
+app.get('/callback', (req, res) => {
+  res.redirect('/list-tokens')
+});
+
 /*
 app.get(
   '/login/facebook',
