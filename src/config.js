@@ -55,6 +55,10 @@ if (process.env.BROWSER) {
       googleTrackingId: process.env.GOOGLE_TRACKING_ID, // UA-XXXXX-X
     },
 
+    rsk: {
+      url: process.env.RSK_URL
+    },
+
     // Authentication
     auth: {
       jwt: { secret: process.env.JWT_SECRET || 'React Starter Kit' },

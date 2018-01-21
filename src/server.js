@@ -96,13 +96,6 @@ app.get(
 );
 */
 
-
-
-app.get("/test", authUser, (req, res) => {
-  res.send("asd");
-});
-
-
 app.post("/token/create", authUser, createToken);
 app.get("/tokens", authUser, allTokens);
 app.get("/my-tokens", authUser, myTokens);
@@ -113,7 +106,7 @@ const RSKTest = () => {
   var now = new Date();
   var RSKService = require('./services/RSKService').default;
   console.log("starting...");  
-  var rskService = new RSKService(0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
+  var rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
   console.log("rskService done");
   /*var crowdsaleInstance = await rskService.deployCrowdsale({
     tokenName: "My Token", 
@@ -129,11 +122,11 @@ const RSKTest = () => {
     },
   });
   console.log('Mined: ', crowdsaleInstance.address);*/
-  // rskService.loadCrowdsaleAt("0x143e692b0f131a0fa173705858b734e5527502c9");
+  rskService.loadCrowdsaleAt("0x143e692b0f131a0fa173705858b734e5527502c9");
   //console.log(rskService.token);
   // console.log(rskService.buyTokens("0x0e082742330d4a06ef127ca89f78f7283141c572", 1e-18));  
-  // console.log(rskService.tokenBalance("0x0e082742330d4a06ef127ca89f78f7283141c572"));
-  console.log("account: ", personal.newAccount("passphrase"));
+  console.log(rskService.tokenBalance("0x0e082742330d4a06ef127ca89f78f7283141c572"));
+  //console.log("account: ", personal.newAccount("passphrase"));
 }
 
 const BTCTest = () => {
@@ -143,7 +136,8 @@ const BTCTest = () => {
 }
 
 app.get('/test', async (req, res, next) => {
-  BTCTest();
+  // BTCTest();
+  RSKTest();
   res.send('done');
 });
 

@@ -1,6 +1,6 @@
 import Web3 from 'web3';
-import contract from 'truffle-contract';
 import BigNumber from 'bignumber.js';
+import config from '../config.js'
 
 const TOKEN_CONFIG = {
   abi: [
@@ -446,7 +446,8 @@ const toEther = weiValue => new BigNumber(weiValue).shift(-WEI_DECIMAL_PLACES);
 
 export default class RSKService {
   constructor(ownerAddress, ownerPrivateKey) {
-    this.provider = new Web3.providers.HttpProvider('http://localhost:4444');
+    console.log("config.rsk.url: ", config.rsk.url);
+    this.provider = new Web3.providers.HttpProvider(config.rsk.url);
     this.web3 = new Web3(this.provider);
 
     // TODO: this is hack to avoid signing transactions - NOT SECURE!
@@ -494,12 +495,12 @@ export default class RSKService {
                 onSent(contract);
               }
               console.log(`Contract transaction send: TransactionHash: ${  contract.transactionHash  } waiting to be mined...`);
-      
-              );
+                    
             } else {
               this.loadCrowdsaleAt(contract.address);
               resolve(contract);
               console.log(`Contract mined! Address: ${  contract.address}`);            
+            }
           }
         },
       );
