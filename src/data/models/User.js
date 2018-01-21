@@ -14,14 +14,15 @@ const User = Model.define(
   'User',
   {
     id: {
-      type: DataType.UUID,
-      defaultValue: DataType.UUIDV1,
+      type: DataType.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
 
     email: {
       type: DataType.STRING(255),
       validate: { isEmail: true },
+      allowNull: false,
     },
 
     fullName: {

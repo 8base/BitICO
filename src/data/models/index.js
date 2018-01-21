@@ -15,13 +15,12 @@ import UserClaim from './UserClaim';
 import UserProfile from './UserProfile';
 */
 
-/*
-User.hasMany(UserLogin, {
+User.hasMany(Token, {
   foreignKey: 'userId',
-  as: 'logins',
-  onUpdate: 'cascade',
-  onDelete: 'cascade',
+  as: 'tokens',
 });
+
+/*
 
 User.hasMany(UserClaim, {
   foreignKey: 'userId',

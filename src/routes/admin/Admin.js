@@ -68,7 +68,7 @@ const fields = [
   },
   {
     name: 'BTC Value Per Token',
-    key: 'BTCValuePerToken',
+    key: 'btcValuePerToken',
     example: 'Ex: 0.00001',
     type: 'float',
   },
@@ -97,7 +97,7 @@ class Admin extends React.Component {
     fields.forEach(f => {
 
       const value = this.state[f.key];
-      const key = f.key;
+      const { key }= f;
 
       if (f.type === 'number') {
 

@@ -9,14 +9,29 @@
 
 import DataType from 'sequelize';
 import Model from '../sequelize';
+import User from "./User";
 
 const Token = Model.define(
   'Token',
   {
     id: {
-      type: DataType.UUID,
-      defaultValue: DataType.UUIDV1,
+      type: DataType.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
+    },
+
+    userId: {
+      type: DataType.INTEGER,
+      allowNull: false,
+
+      references: {
+        // This is a reference to another model
+        model: User,
+
+        // This is the column name of the referenced model
+        key: 'id',
+
+      }
     },
 
     tokenLogo: {
@@ -25,40 +40,49 @@ const Token = Model.define(
 
     tokenName: {
       type: DataType.STRING(255),
+      allowNull: false,
       unique: true
     },
 
     tokenTicker: {
       type: DataType.STRING(255),
+      allowNull: false,
       unique: true
     },
 
     totalSupply: {
       type: DataType.BIGINT,
+      allowNull: false,
     },
 
     allocation: {
       type: DataType.BIGINT,
+      allowNull: false,
     },
 
     softCap: {
       type: DataType.BIGINT,
+      allowNull: false,
     },
 
     hardCap: {
       type: DataType.BIGINT,
+      allowNull: false,
     },
 
     fundStartDate: {
+      allowNull: false,
       type: DataType.INTEGER,
     },
 
     fundEndDate: {
+      allowNull: false,
       type: DataType.INTEGER,
     },
 
-    BTCValuePerToken: {
-      type: DataType.DOUBLE(14, 10),
+    btcValuePerToken: {
+      allowNull: false,
+      type: DataType.DOUBLE(16, 8),
     },
 
     createdAt: {
