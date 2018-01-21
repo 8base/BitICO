@@ -93,14 +93,21 @@ const myTokens = async (req, res) => {
 
 const tokenById = async (req, res) => {
   const { tokenId } = req.params;
+  const { user } = req;
 
   console.log("tokenId = ", tokenId);
 
   const token = await Token.findById(tokenId);
+  const rskService = new RSKService(user.rskAddress);
+  rskService.loadCrowdsaleAt(token.crowdsaleRskAddress);
+  const totalRaised = rskService.totalTokensRaised();
 
   res.json({
     success: true,
-    data: token
+    data: {
+      ...token,
+      totalRaised
+    }
   });
 };
 
@@ -177,5 +184,4 @@ const fetchBtcBalance = async (req, res) => {
 
 
 
-export { createToken, allTokens, myTokens, tokenById, purchaseToken, fetchBalance, fetchBtcBalance
-}
+export { createToken, allTokens, myTokens, tokenById, purchaseToken, fetchBalance, fetchBtcBalance }

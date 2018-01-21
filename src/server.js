@@ -26,7 +26,7 @@ import models from './data/models';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
 import authUser from "./services/auth";
-import {allTokens, createToken, fetchBalance, myTokens, purchaseToken, tokenById} from "./services/tokens"
+import {allTokens, createToken, fetchBalance, myTokens, purchaseToken, tokenById, fetchBtcBalance} from "./services/tokens"
 import {uploadFile, uploadMulter} from "./services/files";
 
 const app = express();

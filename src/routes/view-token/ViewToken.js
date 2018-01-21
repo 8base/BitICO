@@ -119,15 +119,11 @@ class ViewToken extends React.Component {
 
           <Container>
             <Row>
-              <Col sm={4}>
-                <h4 className={s["info-h4"]}>{TokenFields.btcValuePerToken.name}</h4>
-                <p className={s["info-p"]}>{this.state.record.btcValuePerToken}</p>
+              <Col sm={6}>
+                <h4 className={s["info-h4"]}>{TokenFields.rate.name}</h4>
+                <p className={s["info-p"]}>{this.state.record.rate}</p>
               </Col>
-              <Col sm={4}>
-                <h4 className={s["info-h4"]}>{TokenFields.allocation.name}</h4>
-                <p className={s["info-p"]}>{this.state.record.allocation}</p>
-              </Col>
-              <Col sm={4}>
+              <Col sm={6}>
                 <h4 className={s["info-h4"]}>{TokenFields.softCap.name}</h4>
                 <p className={s["info-p"]}>{this.state.record.softCap}</p>
               </Col>

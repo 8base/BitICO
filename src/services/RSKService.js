@@ -587,4 +587,8 @@ export default class RSKService {
     });
 
   tokenBalance = address => toEther(this.token.balanceOf(address));
+
+  totalTokensRaised = () => {
+    return toEther(this.crowdsale.weiRaised());
+  }
 }
