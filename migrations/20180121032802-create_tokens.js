@@ -53,12 +53,12 @@ module.exports = {
 */
 
       softCap: {
-        type: DataType.DECIMAL,
+        type: DataType.DECIMAL(20, 10),
         allowNull: false,
       },
 
       hardCap: {
-        type: DataType.DECIMAL,
+        type: DataType.DECIMAL(20, 10),
         allowNull: false,
       },
 
