@@ -65,6 +65,25 @@ class ViewToken extends React.Component {
     })
   }
 
+  getUserBalance() {
+
+    const credentials = JSON.parse(localStorage.getItem("icox_key"));
+
+    const params = {
+      method: 'GET',
+      url: `/fetch-balance/btc`,
+      headers: {
+        authorization: `Bearer ${credentials.access_token}`,
+        id_token: credentials.id_token,
+      }
+    };
+
+    axios(params).then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
 
   makePurchase () {
 
@@ -141,7 +160,7 @@ class ViewToken extends React.Component {
             <Row>
               <Col sm={4}>
                 <h4 className={s["info-h4"]}>Your Current Balance</h4>
-                <p className={s["info-p"]}>$4,000</p>
+                <p className={s["info-p"]}>${this.state.record.userTokenBalance}</p>
               </Col>
               <Col sm={4}>
                 <h4 className={s["info-h4"]}>Purchase More</h4>
