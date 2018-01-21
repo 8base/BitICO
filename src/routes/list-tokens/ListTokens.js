@@ -83,9 +83,14 @@ class Admin extends React.Component {
               this.state.records.map((item) => (
                   <TableRow key={item.tokenTicker}>
                       {
-                        this.state.headers.map((header) => (
-                          <TableRowColumn key={header}>{item[header]}</TableRowColumn>
-                        ))
+                        this.state.headers.map((header) => {
+                          console.log("header = ", header, "item[header] = ", item[header]);
+                          if (header === "tokenLogo") {
+                            return <TableRowColumn key={header}><img src={`/files/${item[header]}`} alt="" className={s.thumb}/></TableRowColumn>
+                          } else {
+                            return <TableRowColumn key={header}>{item[header]}</TableRowColumn>
+                          }
+                        })
                       }
                   </TableRow>
                 ))
