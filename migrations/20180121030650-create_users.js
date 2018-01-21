@@ -20,19 +20,19 @@ module.exports = {
         },
 
         btcAddress: {
-          type: DataType.STRING(35),
+          type: DataType.STRING(120),
         },
 
         btcPrivateKey: {
-          type: DataType.STRING(64),
+          type: DataType.STRING(120),
         },
 
         rskAddress: {
-          type: DataType.STRING(40),
+          type: DataType.STRING(120),
         },
 
         rskPrivateKey: {
-          type: DataType.STRING(64),
+          type: DataType.STRING(120),
         },
 
         createdAt: {

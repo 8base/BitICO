@@ -21,7 +21,7 @@ const createToken = async (req, res) => {
       tokenName: body.tokenName,
       tokenSymbol: body.tokenTicker,
       startTime: new Date(now.getTime() + 60 * 1000),
-      endTime: body.fundEndDate,
+      endTime: new Date(body.fundEndDate * 1000),
       rate: body.rate,
       goal: body.softCap,
       cap: body.hardCap,
@@ -30,10 +30,8 @@ const createToken = async (req, res) => {
         console.log("Contract sent");
       },
     });
-/*
     console.log('CrowdsaleRskAddress: ', crowdsaleInstance.address);
     console.log('TokenRskAddress: ', rskService.token.address);
-*/
 
 
     await user.createToken({

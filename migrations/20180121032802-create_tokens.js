@@ -74,13 +74,13 @@ module.exports = {
       },
 
     crowdsaleRskAddress: {
-      type: DataType.STRING(40),
+      type: DataType.STRING(120),
       allowNull: false,
       unique: true
     },
 
     tokenRskAddress: {
-      type: DataType.STRING(40),
+      type: DataType.STRING(120),
       allowNull: false,
       unique: true
     },
