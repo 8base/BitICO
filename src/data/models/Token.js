@@ -9,7 +9,6 @@
 
 import DataType from 'sequelize';
 import Model from '../sequelize';
-import User from "./User";
 
 const Token = Model.define(
   'Token',
@@ -23,15 +22,6 @@ const Token = Model.define(
     userId: {
       type: DataType.INTEGER,
       allowNull: false,
-
-      references: {
-        // This is a reference to another model
-        model: User,
-
-        // This is the column name of the referenced model
-        key: 'id',
-
-      }
     },
 
     tokenLogo: {
