@@ -440,23 +440,32 @@ const CROWDSALE_CONFIG = {
 
 const WEI_DECIMAL_PLACES = 18;
 
+// TODO: Super insecure!
+const DEFAULT_PASSPHRASE = "passphrase";
+
+// TODO: temporary hack, because of RSK whitelisitng
+const BANK_ADDRESS = "0x0e082742330d4a06ef127ca89f78f7283141c572";
+
 const toWei = etherValue => new BigNumber(etherValue).shift(WEI_DECIMAL_PLACES);
 
 const toEther = weiValue => new BigNumber(weiValue).shift(-WEI_DECIMAL_PLACES);
 
 export default class RSKService {
-  constructor(ownerAddress, ownerPrivateKey) {
-    console.log("config.rsk.url: ", config.rsk.url);
+  constructor(ownerAddress, ownerPrivateKey) {    
     this.provider = new Web3.providers.HttpProvider(config.rsk.url);
     this.web3 = new Web3(this.provider);
 
     // TODO: this is hack to avoid signing transactions - NOT SECURE!
     if (ownerAddress && ownerPrivateKey) {
-      this.web3.personal.importRawKey(ownerPrivateKey, 'pass');
-      this.web3.personal.unlockAccount(ownerAddress, 'pass');
+      this.login(ownerAddress, ownerPrivateKey);
+    }
+  }
+
+  login = (ownerAddress, ownerPrivateKey) => {
+      this.web3.personal.importRawKey(ownerPrivateKey, DEFAULT_PASSPHRASE);
+      this.web3.personal.unlockAccount(ownerAddress, DEFAULT_PASSPHRASE);
       this.ownerAddress = ownerAddress;
       this.ownerPrivateKey = ownerPrivateKey;
-    }
   }
 
   deployCrowdsale = ({
@@ -507,7 +516,10 @@ export default class RSKService {
       this.crowdsale = crowdsaleInstance;
     });
 
-  createAccount = () => {};
+  acceptBTCTransfer = ( to, etherAmount ) => {
+    // TODO: temporary hack, because of RSK whitelisitng
+    return this.transferEther(BANK_ADDRESS, to, etherAmount);
+  };
 
   transferEther = (from, to, etherAmount) =>
     this.web3.eth.sendTransaction({
@@ -524,15 +536,16 @@ export default class RSKService {
     this.loadTokenAt(this.crowdsale.token());
   };
 
-  createAccount = () => this.web3.personal.newAccount('passphrase');
+  createAccount = () => {    
+    return this.web3.personal.newAccount(DEFAULT_PASSPHRASE);
+  }
 
   loadTokenAt = contractAddress => {
     const Token = this.web3.eth.contract(TOKEN_CONFIG.abi);
     this.token = Token.at(contractAddress);
   };
 
-  buyTokens = (beneficiary, value) => {
-    console.log('value: ', toWei(value));
+  buyTokens = (beneficiary, value) => {    
     return this.crowdsale.buyTokens(beneficiary, {
       value: toWei(value),
       from: this.ownerAddress,

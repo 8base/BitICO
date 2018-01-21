@@ -103,7 +103,7 @@ app.get("/token/:tokenId", authUser, tokenById);
 
 // app.use(checkJwt);
 
-const RSKTest = () => {
+const RSKTest = async () => {
   var now = new Date();
   var RSKService = require('./services/RSKService').default;
   console.log("starting...");  
@@ -114,31 +114,47 @@ const RSKTest = () => {
     tokenSymbol: "TKN",
     startTime: new Date(now.getTime() + 30 * 1000),
     endTime: new Date(2018, 2, 0), 
-    rate: 1,
-    goal: 4,
-    cap: 8,
+    rate: 2,
+    goal: 10e-18, // in BTC
+    cap: 20e-18, // in BTC
     wallet: "0x0e082742330d4a06ef127ca89f78f7283141c572",
     onSent: (contract) => {
       console.log("Contract sent");
     },
   });
   console.log('Mined: ', crowdsaleInstance.address);*/
-  rskService.loadCrowdsaleAt("0x143e692b0f131a0fa173705858b734e5527502c9");
-  //console.log(rskService.token);
-  // console.log(rskService.buyTokens("0x0e082742330d4a06ef127ca89f78f7283141c572", 1e-18));  
-  console.log(rskService.tokenBalance("0x0e082742330d4a06ef127ca89f78f7283141c572"));
-  //console.log("account: ", personal.newAccount("passphrase"));
+  // console.log('Token: ', crowdsaleInstance.address);*/
+  // rskService.loadCrowdsaleAt("0xdf05a424f3903ae6f1ecf69497a6a10601dc94c9");
+  // console.log(rskService.token);
+  // console.log(rskService.buyTokens("0x0e082742330d4a06ef127ca89f78f7283141c572", 7e-18));  
+  // console.log(rskService.tokenBalance("0x0e082742330d4a06ef127ca89f78f7283141c572"));
+  // console.log("rsk.crowdsale.weiRaised(): ", rskService.crowdsale.weiRaised());
+  // console.log("rsk.crowdsale.goalReached(): ", rskService.crowdsale.goalReached());
+  // console.log("rsk.crowdsale.hasEnded(): ", rskService.crowdsale.hasEnded());
+  console.log("account: ", await rskService.createAccount());
 }
 
-const BTCTest = () => {
-  const BTCService = new BTCService();
-  const balance = BTCService.getBalance("mybLjNKLvHdvpqgSVnKFhpiMtfsgTzX9RQ");
+const BTCTest = async () => {
+  var RSKService = require('./services/RSKService').default;
+  var rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
+  console.log("rskService done");
+  
+  var BTCService = require('./services/BTCService').default;
+  const btcService = new BTCService();
+  const address = "mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1";
+  const balance = await btcService.getBalance(address, 0);
   console.log("balance: ", balance);
+  console.log("transferToRSK", await btcService.transferToRSK(address, "0x52faf23d8ba4b21e1ff6260fcd043d9411afb9c5", 1e-5, rskService));
+
+  // TODO: Not secure, should move to client side
+  // console.log("importKeys", await btcService.importKeys(address, pkey));
+  // console.log("dumpPrivateKey", await btcService.dumpPrivateKey(address));
+  // console.log("sendToAddress", await btcService.sendToAddress("mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1", 1e-3));
 }
 
 app.get('/test', async (req, res, next) => {
-  // BTCTest();
-  RSKTest();
+  BTCTest();
+  // RSKTest();
   res.send('done');
 });
 
