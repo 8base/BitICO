@@ -160,4 +160,22 @@ const fetchBalance = async (req, res) => {
 
 };
 
-export { createToken, allTokens, myTokens, tokenById, purchaseToken, fetchBalance }
+
+const fetchBtcBalance = async (req, res) => {
+  const { user } = req;
+
+  const btcService = new BTCService();
+
+  const result = btcService.getBalance(user.btcAddress, 0);
+
+  res.json({
+    success: true,
+    data: result
+  });
+
+};
+
+
+
+export { createToken, allTokens, myTokens, tokenById, purchaseToken, fetchBalance, fetchBtcBalance
+}
