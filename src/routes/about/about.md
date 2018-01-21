@@ -7,6 +7,6 @@ The company started out of Bitcoin Hackathon in Miami in 2018. We started the wh
 
 * Andrei Anisimov
 * Daniel Prada
-* Evgeny Semushin
 * Luis Ricardo La Torre
-*
+* Evgeny Semushin
+* Giancarlo Delgado
