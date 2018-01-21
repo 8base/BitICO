@@ -151,10 +151,11 @@ const BTCTest = async () => {
   
   var BTCService = require('./services/BTCService').default;
   const btcService = new BTCService();
-  const address = "mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1";
-  const balance = await btcService.getBalance(address, 0);
-  console.log("balance: ", balance);
-  console.log("transferToRSK", await btcService.transferToRSK(address, "0x52faf23d8ba4b21e1ff6260fcd043d9411afb9c5", 1e-5, rskService));
+  // const address = "mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1";
+  //const balance = await btcService.getBalance(address, 0);
+  // console.log("balance: ", balance);
+  //console.log("transferToRSK", await btcService.transferToRSK(address, "0x52faf23d8ba4b21e1ff6260fcd043d9411afb9c5", 1e-5, rskService));
+  console.log(btcService.createAccount());
 
   // TODO: Not secure, should move to client side
   // console.log("importKeys", await btcService.importKeys(address, pkey));
