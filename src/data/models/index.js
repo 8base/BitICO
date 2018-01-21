@@ -19,8 +19,15 @@ const initRelations = () => {
   });
 
   User.belongsToMany(Token, {
-    through: Purchase
+    through: Purchase,
+    as: 'purchases',
   });
+
+  Token.belongsToMany(User, {
+    through: Purchase,
+    as: 'buyers',
+  });
+
 };
 
 /*

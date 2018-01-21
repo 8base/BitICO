@@ -69,10 +69,37 @@ const tokenById = async (req, res) => {
     success: true,
     data: token
   });
+};
+
+
+const purchaseToken = async (req, res) => {
+  const { tokenId, amount } = req.params;
+
+  console.log("tokenId = ", tokenId, "amount = ", amount);
+
+  const token = await Token.findById(tokenId);
+
+  try {
+    await req.user.addPurchase(token);
+  } catch ( e ) {
+    console.log("e = ", e);
+  }
+
+
+
+/*
+  const token = await Token.findById(tokenId);
+
+  res.json({
+    success: true,
+    data: token
+  });
+*/
+
   res.json({
     success: true,
   });
 
 };
 
-export { createToken, allTokens, myTokens, tokenById }
+export { createToken, allTokens, myTokens, tokenById, purchaseToken }
