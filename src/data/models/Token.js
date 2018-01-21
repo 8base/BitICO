@@ -55,12 +55,12 @@ const Token = Model.define(
 */
 
     softCap: {
-      type: DataType.BIGINT,
+      type: DataType.DECIMAL,
       allowNull: false,
     },
 
     hardCap: {
-      type: DataType.BIGINT,
+      type: DataType.DECIMAL,
       allowNull: false,
     },
 
