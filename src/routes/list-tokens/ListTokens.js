@@ -73,8 +73,8 @@ class Admin extends React.Component {
             <TableRow>
               {
                 this.state.headers.map((header) => (
-                    <TableHeaderColumn key={header}>{header}</TableHeaderColumn>
-                  ))
+                  <TableHeaderColumn key={header}>{header}</TableHeaderColumn>
+                ))
               }
             </TableRow>
           </TableHeader>
@@ -88,7 +88,11 @@ class Admin extends React.Component {
                           if (header === "tokenLogo") {
                             return <TableRowColumn key={header}><img src={`/files/${item[header]}`} alt="" className={s.thumb}/></TableRowColumn>
                           } else {
-                            return <TableRowColumn key={header}>{item[header]}</TableRowColumn>
+                            return <TableRowColumn key={header}>
+                                    {
+                                      header.indexOf('Date') > -1 ? TokenFields.fundStartDate.format(item[header]) : item[header]
+                                    }
+                                  </TableRowColumn>
                           }
                         })
                       }

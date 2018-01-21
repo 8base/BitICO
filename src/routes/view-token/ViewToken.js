@@ -11,6 +11,7 @@ import React from 'react';
 import axios from 'axios';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import LinearProgress from 'material-ui/LinearProgress';
+import {Row, Col, Container} from 'react-grid-system';
 
 import s from "./ViewToken.css";
 import TokenFields from './../../data/ui-models/TokenFields';
@@ -83,23 +84,36 @@ class Admin extends React.Component {
 
           <LinearProgress mode="determinate" value={this.state.completed} />
 
-          <h4 className={s["info-h4"]}>{TokenFields.btcValuePerToken.name}</h4>
-          <p className={s["info-p"]}>{this.state.record.btcValuePerToken}</p>
-
-          <h4 className={s["info-h4"]}>{TokenFields.allocation.name}</h4>
-          <p className={s["info-p"]}>{this.state.record.allocation}</p>
-
-          <h4 className={s["info-h4"]}>{TokenFields.softCap.name}</h4>
-          <p className={s["info-p"]}>{this.state.record.softCap}</p>
-
-          <h4 className={s["info-h4"]}>{TokenFields.hardCap.name}</h4>
-          <p className={s["info-p"]}>{this.state.record.hardCap}</p>
-
-          <h4 className={s["info-h4"]}>{TokenFields.fundStartDate.name}</h4>
-          <p className={s["info-p"]}>{TokenFields.fundStartDate.format(this.state.record.fundStartDate)}</p>
-
-          <h4 className={s["info-h4"]}>{TokenFields.fundEndDate.name}</h4>
-          <p className={s["info-p"]}>{TokenFields.fundEndDate.format(this.state.record.fundEndDate)}</p>
+          <Container>
+            <Row>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>{TokenFields.btcValuePerToken.name}</h4>
+                <p className={s["info-p"]}>{this.state.record.btcValuePerToken}</p>
+              </Col>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>{TokenFields.allocation.name}</h4>
+                <p className={s["info-p"]}>{this.state.record.allocation}</p>
+              </Col>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>{TokenFields.softCap.name}</h4>
+                <p className={s["info-p"]}>{this.state.record.softCap}</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>{TokenFields.hardCap.name}</h4>
+                <p className={s["info-p"]}>{this.state.record.hardCap}</p>
+              </Col>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>{TokenFields.fundStartDate.name}</h4>
+                <p className={s["info-p"]}>{TokenFields.fundStartDate.format(this.state.record.fundStartDate)}</p>
+              </Col>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>{TokenFields.fundEndDate.name}</h4>
+                <p className={s["info-p"]}>{TokenFields.fundEndDate.format(this.state.record.fundEndDate)}</p>
+              </Col>
+            </Row>
+          </Container>
         </div>
       </div>
     );
