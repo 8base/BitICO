@@ -14,6 +14,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {Row, Col, Container} from 'react-grid-system';
 import numeral from "numeral";
+import Dialog from 'material-ui/Dialog';
 import LinearProgress from 'material-ui/LinearProgress';
 import CircularProgress from 'material-ui/CircularProgress';
 import s from "./ViewToken.css";
@@ -30,6 +31,7 @@ class ViewToken extends React.Component {
       purchase: "",
       userBTCBalance: "",
       open: false,
+      lastBalance: "",
     }
   }
 
@@ -74,7 +76,17 @@ class ViewToken extends React.Component {
 
       console.log("Token Balance", response);
       const record = response.data.data || {};
-      this.setState({record});
+
+      const o = {
+        record: record
+      };
+
+      if (this.state.lastBalance !== response.data.data.userTokenBalance && this.state.open) {
+        this.handleClose();
+        o.lastBalance = response.data.data.userTokenBalance;
+      }
+
+      this.setState(o);
 
     }).catch(error => {
       console.log(error);
@@ -153,10 +165,8 @@ class ViewToken extends React.Component {
     };
 
     axios(params).then(response => {
-      console.log(response)
-      this.handleClose();
+      console.log(response);
     }).catch(error => {
-      this.handleClose();
       console.log(error);
     })
   }
