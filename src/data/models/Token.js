@@ -40,10 +40,12 @@ const Token = Model.define(
       unique: true
     },
 
+/*
     totalSupply: {
       type: DataType.BIGINT,
       allowNull: false,
     },
+*/
 
     allocation: {
       type: DataType.BIGINT,

@@ -38,10 +38,12 @@ module.exports = {
         unique: true
       },
 
+/*
       totalSupply: {
         type: DataType.BIGINT,
         allowNull: false,
       },
+*/
 
       allocation: {
         type: DataType.BIGINT,
