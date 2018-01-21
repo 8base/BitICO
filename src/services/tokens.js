@@ -69,7 +69,7 @@ const createToken = async (req, res) => {
 
 const allTokens = async (req, res) => {
   const tokens = await Token.findAll({
-    order: [["tokenName", "ASC"]]
+    order: [["createdAt", "DESC"]]
   });
 
   res.json({
