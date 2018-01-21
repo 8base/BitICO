@@ -59,6 +59,11 @@ if (process.env.BROWSER) {
       url: process.env.RSK_URL
     },
 
+    btc: {
+      host: process.env.BTC_HOST,
+      port: process.env.BTC_PORT
+    },
+
     // Authentication
     auth: {
       jwt: { secret: process.env.JWT_SECRET || 'React Starter Kit' },

@@ -13,3 +13,7 @@
   padding-left: 20px;
   padding-right: 20px;
 }
+
+.thumb {
+  max-height: 80%;
+}
