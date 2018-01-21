@@ -1,3 +1,7 @@
+import moment from 'moment';
+
+const formatDate = d => moment(new Date(d * 1000)).format('MMM Do');
+
 const TokenFields = {
     tokenLogo: {
       name: 'Token Logo',
@@ -85,14 +89,14 @@ const TokenFields = {
       key: 'fundStartDate',
       type: 'date',
       visibleInListView: true,
-      format: d => new Date(d * 1000).toISOString()
+      format: formatDate
     },
     fundEndDate: {
       name: 'Fund End Date',
       key: 'fundEndDate',
       type: 'date',
       visibleInListView: true,
-      format: d => new Date(d * 1000).toISOString()
+      format: formatDate
     },
     btcValuePerToken: {
       name: 'BTC Value Per Token',

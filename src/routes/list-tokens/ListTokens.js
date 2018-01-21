@@ -73,22 +73,26 @@ class Admin extends React.Component {
             <TableRow>
               {
                 this.state.headers.map((header) => (
-                    <TableHeaderColumn key={header}>{header}</TableHeaderColumn>
-                  ))
+                  <TableHeaderColumn key={header}>{header}</TableHeaderColumn>
+                ))
               }
             </TableRow>
           </TableHeader>
           <TableBody>
             {
               this.state.records.map((item) => (
-                  <TableRow key={item.tokenTicker}>
-                      {
-                        this.state.headers.map((header) => (
-                          <TableRowColumn key={header}>{item[header]}</TableRowColumn>
-                        ))
-                      }
-                  </TableRow>
-                ))
+                <TableRow key={item.tokenTicker}>
+                  {
+                    this.state.headers.map((header) => (
+                      <TableRowColumn key={header}>
+                        {
+                          header.indexOf('Date') > -1 ? TokenFields.fundStartDate.format(item[header]) : item[header]
+                        }
+                      </TableRowColumn>
+                    ))
+                  }
+                </TableRow>
+              ))
             }
           </TableBody>
         </Table>
