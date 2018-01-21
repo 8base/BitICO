@@ -1,14 +1,45 @@
 import Token from "../data/models/Token";
+import RSKService from "./RSKService";
 
 const createToken = async (req, res) => {
 //    console.log("req.user = ", req.user);
 //  console.log("req.body = ", req.body);
 
-  const { user } = req;
+  const { user, body } = req;
   // console.log("user = ", user);
 
   try {
-    await user.createToken(req.body);
+
+    const now = new Date();
+
+    const rskService = new RSKService(user.rskAddress);
+    console.log("rskService done");
+    body.softCap = 0.00001;
+    body.hardCap = 0.0001;
+    const crowdsaleInstance = await rskService.deployCrowdsale({
+      tokenName: body.tokenName,
+      tokenSymbol: body.tokenTicker,
+      startTime: new Date(now.getTime() + 60 * 1000),
+      endTime: body.fundEndDate,
+      rate: body.rate,
+      goal: body.softCap,
+      cap: body.hardCap,
+      wallet: user.rskAddress,
+      onSent: (contract) => {
+        console.log("Contract sent");
+      },
+    });
+/*
+    console.log('CrowdsaleRskAddress: ', crowdsaleInstance.address);
+    console.log('TokenRskAddress: ', rskService.token.address);
+*/
+
+
+    await user.createToken({
+      ...body,
+      crowdsaleRskAddress: crowdsaleInstance.address,
+      tokenRskAddress: rskService.token.address
+    });
 
     res.json({
       success: true
@@ -87,14 +118,14 @@ const purchaseToken = async (req, res) => {
 
 
 
-/*
-  const token = await Token.findById(tokenId);
+  /*
+    const token = await Token.findById(tokenId);
 
-  res.json({
-    success: true,
-    data: token
-  });
-*/
+    res.json({
+      success: true,
+      data: token
+    });
+  */
 
   res.json({
     success: true,

@@ -30,6 +30,7 @@ const TokenFields = {
       },
       visibleInListView: true,
     },
+/*
     totalSupply: {
       name: 'Total Supply',
       key: 'totalSupply',
@@ -44,6 +45,8 @@ const TokenFields = {
       },
       visibleInListView: true,
     },
+*/
+/*
     allocation: {
       name: 'Allocation',
       key: 'allocation',
@@ -58,6 +61,7 @@ const TokenFields = {
       },
       visibleInListView: true,
     },
+*/
     softCap: {
       name: 'Soft Cap',
       key: 'softCap',
@@ -98,11 +102,18 @@ const TokenFields = {
       visibleInListView: true,
       format: formatDate
     },
-    btcValuePerToken: {
-      name: 'BTC Value Per Token',
-      key: 'btcValuePerToken',
-      example: 'Ex: 0.00001',
-      type: 'float',
+    rate: {
+      name: 'Rate',
+      key: 'rate',
+      example: 'Ex: 120000',
+      type: 'number',
+      validation: (text) => {
+        if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
+          return "";
+        }
+
+        return "Must a number without decimals (commas optional but must be properly formatted)";
+      },
       visibleInListView: true,
     },
 

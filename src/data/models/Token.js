@@ -70,9 +70,21 @@ const Token = Model.define(
       type: DataType.INTEGER,
     },
 
-    btcValuePerToken: {
+    rate: {
       allowNull: false,
-      type: DataType.DOUBLE(16, 8),
+      type: DataType.INTEGER,
+    },
+
+    crowdsaleRskAddress: {
+      type: DataType.STRING(40),
+      allowNull: false,
+      unique: true
+    },
+
+    tokenRskAddress: {
+      type: DataType.STRING(40),
+      allowNull: false,
+      unique: true
     },
 
     createdAt: {

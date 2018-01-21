@@ -41,6 +41,7 @@ class Admin extends React.Component {
 
     const body = {};
 
+    console.log("fields = ", fields);
     fields.forEach(f => {
 
       const value = this.state[f.key];
@@ -68,11 +69,12 @@ class Admin extends React.Component {
       method: 'post',
       url: '/token/create',
       data: body,
+      timeout: 120 * 1000,
       headers: {
         authorization: `Bearer ${credentials.access_token}`,
         id_token: credentials.id_token,
       }
-    });
+    }).then(response => alert("done"));
   }
 
 

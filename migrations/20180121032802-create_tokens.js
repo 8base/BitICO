@@ -68,12 +68,24 @@ module.exports = {
         type: DataType.INTEGER,
       },
 
-      btcValuePerToken: {
+      rate: {
         allowNull: false,
-        type: DataType.DOUBLE(16, 8),
+        type: DataType.INTEGER,
       },
 
-      createdAt: {
+    crowdsaleRskAddress: {
+      type: DataType.STRING(40),
+      allowNull: false,
+      unique: true
+    },
+
+    tokenRskAddress: {
+      type: DataType.STRING(40),
+      allowNull: false,
+      unique: true
+    },
+
+    createdAt: {
         allowNull: false,
         type: DataType.DATE
       },
