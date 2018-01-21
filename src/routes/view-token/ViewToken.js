@@ -87,7 +87,7 @@ class ViewToken extends React.Component {
       record.userTokenBalance = parseFloat(response.data.data);
 
       this.setState({
-        record: record
+        record
       });
 
       console.log("Token Balance", response);
@@ -111,6 +111,11 @@ class ViewToken extends React.Component {
 
     axios(params).then(response => {
       console.log("BTC Balance ", response);
+
+      this.setState({
+        userBTCBalance: response.data.data
+      });
+
     }).catch(error => {
       console.log(error);
     })
