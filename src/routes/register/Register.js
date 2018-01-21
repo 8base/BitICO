@@ -24,6 +24,25 @@ class Register extends React.Component {
     this.auth = new auth0.WebAuth(config.auth0);
   }
 
+  componentDidMount() {
+
+    if (window.location.hash.length === 0) {
+      return;
+    }
+
+    const credentials = {};
+
+    window.location.hash.split(/&|#/).forEach((item) => {
+      if (item.indexOf("=") > -1) {
+        const keyPair = item.split('=');
+        credentials[keyPair[0]] = keyPair[1];
+      }
+    });
+
+    localStorage.setItem("icox_key", JSON.stringify(credentials));
+    window.location.pathname = "/admin";
+  }
+
   login() {
     this.auth.authorize();
   }
