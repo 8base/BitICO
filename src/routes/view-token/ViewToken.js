@@ -165,25 +165,25 @@ class ViewToken extends React.Component {
           <h4 className={s["info-h4"]}>Total Funding Raised</h4>
           <LinearProgress mode="determinate" value={parseFloat(this.state.record.totalRaised)/totalMoney * 100} style={{height: "30px"}} />
 
-          <h4 className={s["info-h4"]}>Soft Cap Raised</h4>
+          <h4 className={s["info-h4"]}>Soft Cap</h4>
           <LinearProgress mode="determinate" value={parseFloat(this.state.record.softCap)/totalMoney * 100} style={{height: "40px"}} color="#592877"/>
 
           <Container>
             <Row>
-              <Col sm={6}>
+              <Col sm={4}>
                 <h4 className={s["info-h4"]}>{TokenFields.rate.name}</h4>
                 <p className={s["info-p"]}>{this.state.record.rate}</p>
               </Col>
-              <Col sm={6}>
+              <Col sm={4}>
                 <h4 className={s["info-h4"]}>{TokenFields.softCap.name}</h4>
                 <p className={s["info-p"]}>{this.state.record.softCap}</p>
               </Col>
-            </Row>
-            <Row>
               <Col sm={4}>
                 <h4 className={s["info-h4"]}>{TokenFields.hardCap.name}</h4>
                 <p className={s["info-p"]}>{this.state.record.hardCap}</p>
               </Col>
+            </Row>
+            <Row>
               <Col sm={4}>
                 <h4 className={s["info-h4"]}>{TokenFields.fundStartDate.name}</h4>
                 <p className={s["info-p"]}>{TokenFields.fundStartDate.format(this.state.record.fundStartDate)}</p>
@@ -195,12 +195,12 @@ class ViewToken extends React.Component {
             </Row>
             <Row>
               <Col sm={4}>
-                <h4 className={s["info-h4"]}>Your Current Balance</h4>
+                <h4 className={s["info-h4"]}>Your Token Balance</h4>
                 <p className={s["info-p"]}>{this.state.record.userTokenBalance} {this.state.record.tokenTicker}</p>
               </Col>
               <Col sm={4}>
-                <h4 className={s["info-h4"]}>Purchase More</h4>
-                <p className={s["info-p"]}>{this.state.record.hardCap}</p>
+                <h4 className={s["info-h4"]}>Your BTC Balance {`"${this.state.record.tokenName}"`}</h4>
+                <p className={s["info-p"]}>{this.state.userBTCBalance} BTC</p>
               </Col>
               <Col sm={4}>
                 <h4 className={s["info-h4"]}>Purchase More {`"${this.state.record.tokenName}"`}</h4>
@@ -211,9 +211,6 @@ class ViewToken extends React.Component {
                   onChange={(e) => {this.onPurchaseInputChange(e)}}
                 />
                 <RaisedButton label="Purchase" primary onClick={()=> this.makePurchase()} style={{textTransform:'capitalize'}} />
-
-                <h4 className={s["info-h4"]}>Your Balance {`"${this.state.record.tokenName}"`}</h4>
-                <p className={s["info-p"]}>{this.state.userBTCBalance} BTC</p>
               </Col>
             </Row>
           </Container>
