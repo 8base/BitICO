@@ -16,6 +16,10 @@ class Home extends React.Component {
   render() {
     return (
       <div className={s.root}>
+        <div className={s.banner}>
+          <h1 className={s.bannerTitle}>Smart contracts on Bitcoin</h1>
+          <p className={s.bannerDesc}>Use Bitcoin for your next ICO</p>
+        </div>
         <div className={s.container}>
           <h1>React.js News</h1>
         </div>
