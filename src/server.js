@@ -26,7 +26,7 @@ import models from './data/models';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
 import authUser from "./services/auth";
-import {allTokens, createToken, myTokens, purchaseToken, tokenById} from "./services/tokens"
+import {allTokens, createToken, fetchBalance, myTokens, purchaseToken, tokenById} from "./services/tokens"
 import {uploadFile, uploadMulter} from "./services/files";
 
 const app = express();
@@ -109,7 +109,8 @@ app.get("/tokens", authUser, allTokens);
 app.get("/my-tokens", authUser, myTokens);
 app.get("/token/:tokenId", authUser, tokenById);
 app.post("/token/:tokenId/purchase/:amount", authUser, purchaseToken);
-app.get("/fetch-balance/token/:tokenId", authUser, purchaseToken);
+app.get("/fetch-balance/token/:tokenId", authUser, fetchBalance);
+app.get("/fetch-balance/btc", authUser, fetchBtcBalance);
 app.post("/file/upload", authUser, uploadMulter.single('file'), uploadFile);
 
 // app.use(checkJwt);
@@ -119,7 +120,7 @@ const RSKTest = async () => {
   const RSKService = require('./services/RSKService').default;
   console.log("starting...");
   const rskService = new RSKService("0xb7c7ddee89a42e14069862443dd4ae56baea704a");
-  console.log("rskService done");  
+  console.log("rskService done");
   // console.log("transferEther", await rskService.transferEther("0x0e082742330d4a06ef127ca89f78f7283141c572", "0xb7c7ddee89a42e14069862443dd4ae56baea704a", 1e-3));
   /*var crowdsaleInstance = await rskService.deployCrowdsale({
     tokenName: "My Token",
