@@ -28,12 +28,14 @@ class ViewToken extends React.Component {
       record: {},
       completed: 0,
       purchase: "",
+      credentials: {}
     }
   }
 
   componentDidMount () {
 
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
+
     const id = parseInt(window.location.pathname.match(/(\d*)$/)[1], 10);
 
     const params = {
@@ -52,16 +54,12 @@ class ViewToken extends React.Component {
 
     }).catch(error => {
       console.log(error);
-    })
-  }
-
-  componentWillMount() {
+    });
 
     setInterval(()=>{
       this.getTokenBalance();
       this.getUserBTCBalance();
     }, 5000);
-
   }
 
   onPurchaseInputChange (e) {
