@@ -121,8 +121,7 @@ class Admin extends React.Component {
     let dropzoneRef;
     return (
       <div className={s.root}>
-        <Dropzone ref={(node) => { dropzoneRef = node; }} onDrop={(accepted) => this.handleFileUpload(accepted)} style={{display: "none"}}>
-        </Dropzone>
+        <Dropzone ref={(node) => { dropzoneRef = node; }} onDrop={(accepted) => this.handleFileUpload(accepted)} style={{display: "none"}} />
         <form onSubmit={() => this.handleSubmit()} className={s.container}>
 
           <h1>
