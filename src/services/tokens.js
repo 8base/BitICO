@@ -5,6 +5,7 @@ const createToken = async (req, res) => {
   console.log("req.body = ", req.body);
 
   const { user } = req;
+  console.log("user = ", user);
 
   try {
     await user.createToken(req.body);

@@ -7,18 +7,22 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import sequelize from '../sequelize';
 import User from './User';
 import Token from './Token';
-/*
-import UserClaim from './UserClaim';
-import UserProfile from './UserProfile';
-*/
+import Purchase from './Purchase';
 
-User.hasMany(Token, {
-  foreignKey: 'userId',
-  as: 'tokens',
-});
+
+const initRelations = () => {
+  console.log("here");
+  User.hasMany(Token, {
+    foreignKey: 'userId',
+    as: 'tokens',
+  });
+
+  User.belongsToMany(Token, {
+    through: Purchase
+  });
+};
 
 /*
 
@@ -37,9 +41,11 @@ User.hasOne(UserProfile, {
 });
 */
 
+/*
 function sync(...args) {
   return sequelize.sync(...args);
 }
+*/
 
-export default { sync };
+export default { initRelations };
 export { User, Token };

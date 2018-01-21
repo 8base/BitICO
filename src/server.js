@@ -226,13 +226,19 @@ app.use((err, req, res, next) => {
 //
 // Launch the server
 // -----------------------------------------------------------------------------
-const promise = models.sync().catch(err => console.error(err.stack));
+// const promise = models.sync().catch(err => console.error(err.stack));
+models.initRelations();
 if (!module.hot) {
+  app.listen(config.port, () => {
+    console.info(`The server is running at http://localhost:${config.port}/`);
+  });
+/*
   promise.then(() => {
     app.listen(config.port, () => {
       console.info(`The server is running at http://localhost:${config.port}/`);
     });
   });
+*/
 }
 
 //
