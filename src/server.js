@@ -26,7 +26,7 @@ import models from './data/models';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
 import authUser from "./services/auth";
-import {allTokens, createToken, myTokens} from "./services/tokens"
+import {allTokens, createToken, myTokens, tokenById} from "./services/tokens"
 
 const app = express();
 
@@ -106,6 +106,7 @@ app.get("/test", authUser, (req, res) => {
 app.post("/token/create", authUser, createToken);
 app.get("/tokens", authUser, allTokens);
 app.get("/my-tokens", authUser, myTokens);
+app.get("/token/:tokenId", authUser, tokenById);
 
 // app.use(checkJwt);
 

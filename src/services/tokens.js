@@ -2,10 +2,10 @@ import Token from "../data/models/Token";
 
 const createToken = async (req, res) => {
 //    console.log("req.user = ", req.user);
-  console.log("req.body = ", req.body);
+//  console.log("req.body = ", req.body);
 
   const { user } = req;
-  console.log("user = ", user);
+  // console.log("user = ", user);
 
   try {
     await user.createToken(req.body);
@@ -58,4 +58,21 @@ const myTokens = async (req, res) => {
   });
 };
 
-export { createToken, allTokens, myTokens }
+const tokenById = async (req, res) => {
+  const { tokenId } = req.params;
+
+  console.log("tokenId = ", tokenId);
+
+  const token = await Token.findById(tokenId);
+
+  res.json({
+    success: true,
+    data: token
+  });
+  res.json({
+    success: true,
+  });
+
+};
+
+export { createToken, allTokens, myTokens, tokenById }
