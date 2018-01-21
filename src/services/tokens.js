@@ -97,17 +97,17 @@ const tokenById = async (req, res) => {
 
   console.log("tokenId = ", tokenId);
 
-  const token = await Token.findById(tokenId);
+  let token = await Token.findById(tokenId);
   const rskService = new RSKService(user.rskAddress);
   rskService.loadCrowdsaleAt(token.crowdsaleRskAddress);
   const totalRaised = rskService.totalTokensRaised();
-
+  const userTokenBalance = rskService.tokenBalance(user.rskAddress);
+  token = token.toJSON();
+  token["totalRaised"] = totalRaised.toString(10);
+  token["userTokenBalance"] = userTokenBalance.toString(10);
   res.json({
     success: true,
-    data: {
-      ...token,
-      totalRaised
-    }
+    data: token
   });
 };
 
