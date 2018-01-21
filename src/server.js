@@ -113,14 +113,14 @@ app.post("/file/upload", authUser, uploadMulter.single('file'), uploadFile);
 
 // app.use(checkJwt);
 
-const RSKTest = () => {
+const RSKTest = async () => {
   const now = new Date();
   const RSKService = require('./services/RSKService').default;
   console.log("starting...");
-  const rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
-  console.log("rskService done");
-  rskService.login("RskAddress");
-  /* var crowdsaleInstance = await rskService.deployCrowdsale({
+  const rskService = new RSKService("0xb7c7ddee89a42e14069862443dd4ae56baea704a");
+  console.log("rskService done");  
+  console.log("transferEther", await rskService.transferEther("0x0e082742330d4a06ef127ca89f78f7283141c572", "0xb7c7ddee89a42e14069862443dd4ae56baea704a", 1e-3));
+  /*var crowdsaleInstance = await rskService.deployCrowdsale({
     tokenName: "My Token",
     tokenSymbol: "TKN",
     startTime: new Date(now.getTime() + 30 * 1000),
@@ -135,6 +135,8 @@ const RSKTest = () => {
   });
   console.log('CrowdsaleRskAddress: ', crowdsaleInstance.address);
   console.log('TokenRskAddress: ', rskService.token.address);*/
+  // rskService.loadCrowdsaleAt("0xa0090ced73dbef8abbde8f39421c08d0d111432c");
+  // console.log("rsk.crowdsale.cap(): ", rskService.crowdsale.cap());
   // console.log('Token: ', crowdsaleInstance.address);*/
   // rskService.loadCrowdsaleAt("0xdf05a424f3903ae6f1ecf69497a6a10601dc94c9");
   // console.log(rskService.token);
@@ -144,6 +146,7 @@ const RSKTest = () => {
   // console.log("rsk.crowdsale.goalReached(): ", rskService.crowdsale.goalReached());
   // console.log("rsk.crowdsale.hasEnded(): ", rskService.crowdsale.hasEnded());
   // console.log("account: ", await rskService.createAccount());
+
 }
 
 const BTCTest = async () => {
@@ -166,8 +169,8 @@ const BTCTest = async () => {
 }
 
 app.get('/test', async (req, res, next) => {
-  BTCTest();
-  // RSKTest();
+  // BTCTest();
+  RSKTest();
   res.send('done');
 });
 

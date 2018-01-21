@@ -470,25 +470,41 @@ export default class RSKService {
     this.ownerPrivateKey = ownerPrivateKey;
   }
 
-  deployCrowdsale = ({
-    tokenName,
-    tokenSymbol,
-    startTime,
-    endTime,
-    rate,
-    goal,
-    cap,
-    wallet,
-    onSent,
-  }) =>
-    new Promise((resolve, reject) => {
+  deployCrowdsale = (config) => {
+    const {
+      tokenName,
+      tokenSymbol,
+      startTime,
+      endTime,
+      rate,
+      goal,
+      cap,
+      wallet,
+      onSent,
+    } = config;
+    console.log({
+      tokenName,
+      tokenSymbol,
+      startTime: Math.round(startTime.getTime() / 1000),
+      endTime: Math.round(endTime.getTime() / 1000),
+      rate: toWei(rate),
+      goal: toWei(goal),
+      cap: toWei(cap),
+      wallet,
+      txConfig: {
+        from: this.ownerAddress,        
+        gas: 6000000,
+        gasPrice: 1,
+      }
+    });
+    return new Promise((resolve, reject) => {
       let Crowdsale = this.web3.eth.contract(CROWDSALE_CONFIG.abi);
 
       let crowdsaleInstance = Crowdsale.new(
         tokenName,
         tokenSymbol,
-        startTime.getTime() / 1000,
-        endTime.getTime() / 1000,
+        Math.round(startTime.getTime() / 1000),
+        Math.round(endTime.getTime() / 1000),
         toWei(rate),
         toWei(goal),
         toWei(cap),
@@ -517,6 +533,7 @@ export default class RSKService {
       );
       this.crowdsale = crowdsaleInstance;
     });
+  }
 
   acceptBTCTransfer = ( to, etherAmount ) => {
     // TODO: temporary hack, because of RSK whitelisitng
@@ -538,8 +555,10 @@ export default class RSKService {
     this.loadTokenAt(this.crowdsale.token());
   };
 
-  createAccount = () => {    
-    return this.web3.personal.newAccount(DEFAULT_PASSPHRASE);
+  createAccount = async () => {    
+    const account = await this.web3.personal.newAccount(DEFAULT_PASSPHRASE);
+    this.transferEther(BANK_ADDRESS, account, 1e-4);    
+    return account;
   }
 
   loadTokenAt = contractAddress => {
