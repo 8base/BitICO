@@ -29,6 +29,14 @@ export default class BTCService {
     return this.client.importPrivKey(privateKey, publicKey, false);
   }
 
+  createAccount = () => {   
+    const keyPair = this.generateKeyPair();
+    const address = keyPair.getAddress();
+    const privateKey = keyPair.toWIF();
+    this.importKeys(address, privateKey);
+    return address;
+  }  
+
   dumpPrivateKey = ( publicKey ) => {
     return this.client.dumpPrivKey(publicKey);
   }
@@ -51,15 +59,19 @@ export default class BTCService {
     });
   }
 
+  buyTokens = async ( btcAddress, rskAddress, value, rskService) => {
+    this.transferToRSK(btcAddress, rskAddress, value, rskService).then((res) => {
+
+    });
+
+  }
+
+
   getBalance = (account, numconf) => {
     return this.client.getBalance(account, numconf);    
   }
 
   getAccount = (address) => {
-    return this.client.getAccount(address);    
-  }
-
-  getAccount = () => {
-
+    return this.client.getAccount(address);
   }
 }

@@ -119,6 +119,7 @@ const RSKTest = () => {
   console.log("starting...");
   const rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
   console.log("rskService done");
+  rskService.login("RskAddress");
   /* var crowdsaleInstance = await rskService.deployCrowdsale({
     tokenName: "My Token",
     tokenSymbol: "TKN",
@@ -132,7 +133,8 @@ const RSKTest = () => {
       console.log("Contract sent");
     },
   });
-  console.log('Mined: ', crowdsaleInstance.address);*/
+  console.log('CrowdsaleRskAddress: ', crowdsaleInstance.address);
+  console.log('TokenRskAddress: ', rskService.token.address);*/
   // console.log('Token: ', crowdsaleInstance.address);*/
   // rskService.loadCrowdsaleAt("0xdf05a424f3903ae6f1ecf69497a6a10601dc94c9");
   // console.log(rskService.token);
@@ -151,10 +153,11 @@ const BTCTest = async () => {
   
   var BTCService = require('./services/BTCService').default;
   const btcService = new BTCService();
-  const address = "mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1";
-  const balance = await btcService.getBalance(address, 0);
-  console.log("balance: ", balance);
-  console.log("transferToRSK", await btcService.transferToRSK(address, "0x52faf23d8ba4b21e1ff6260fcd043d9411afb9c5", 1e-5, rskService));
+  // const address = "mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1";
+  //const balance = await btcService.getBalance(address, 0);
+  // console.log("balance: ", balance);
+  //console.log("transferToRSK", await btcService.transferToRSK(address, "0x52faf23d8ba4b21e1ff6260fcd043d9411afb9c5", 1e-5, rskService));
+  console.log(btcService.createAccount());
 
   // TODO: Not secure, should move to client side
   // console.log("importKeys", await btcService.importKeys(address, pkey));
