@@ -10,8 +10,8 @@
 import DataType from 'sequelize';
 import Model from '../sequelize';
 
-const User = Model.define(
-  'User',
+const Token = Model.define(
+  'Token',
   {
     id: {
       type: DataType.UUID,
@@ -19,29 +19,46 @@ const User = Model.define(
       primaryKey: true,
     },
 
-    email: {
-      type: DataType.STRING(255),
-      validate: { isEmail: true },
-    },
-
-    fullName: {
+    tokenLogo: {
       type: DataType.STRING(255),
     },
 
-    btcAddress: {
-      type: DataType.STRING(35),
+    tokenName: {
+      type: DataType.STRING(255),
+      unique: true
     },
 
-    btcPrivateKey: {
-      type: DataType.STRING(64),
+    tokenTicker: {
+      type: DataType.STRING(255),
+      unique: true
     },
 
-    rskAddress: {
-      type: DataType.STRING(40),
+    totalSupply: {
+      type: DataType.BIGINT,
     },
 
-    rskPrivateKey: {
-      type: DataType.STRING(64),
+    allocation: {
+      type: DataType.BIGINT,
+    },
+
+    softCap: {
+      type: DataType.BIGINT,
+    },
+
+    hardCap: {
+      type: DataType.BIGINT,
+    },
+
+    fundStartDate: {
+      type: DataType.INTEGER,
+    },
+
+    fundEndDate: {
+      type: DataType.INTEGER,
+    },
+
+    BTCValuePerToken: {
+      type: DataType.DOUBLE(14, 10),
     },
 
     createdAt: {
@@ -55,13 +72,11 @@ const User = Model.define(
     deletedAt: {
       type: DataType.DATE
     }
-
   },
   {
-    indexes: [{ fields: ['email'] }],
     timestamps: true,
     paranoid: true,
   },
 );
 
-export default User;
+export default Token;

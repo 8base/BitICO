@@ -25,7 +25,7 @@ import router from './router';
 import models from './data/models';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
-import fetchOrCreateUser from "./services/auth";
+import authUser from "./services/auth";
 import { allTokens, createToken } from "./services/tokens"
 
 const app = express();
@@ -98,13 +98,13 @@ app.get(
 
 
 
-app.get("/test", fetchOrCreateUser, (req, res) => {
+app.get("/test", authUser, (req, res) => {
   res.send("asd");
 });
 
 
-app.post("/token/create", fetchOrCreateUser, createToken);
-app.post("/tokens", fetchOrCreateUser, allTokens);
+app.post("/token/create", authUser, createToken);
+app.post("/tokens", authUser, allTokens);
 
 // app.use(checkJwt);
 

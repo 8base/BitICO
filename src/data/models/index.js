@@ -9,8 +9,8 @@
 
 import sequelize from '../sequelize';
 import User from './User';
+import Token from './Token';
 /*
-import UserLogin from './UserLogin';
 import UserClaim from './UserClaim';
 import UserProfile from './UserProfile';
 */
@@ -43,4 +43,4 @@ function sync(...args) {
 }
 
 export default { sync };
-export { User };
+export { User, Token };
