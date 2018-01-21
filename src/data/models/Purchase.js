@@ -21,21 +21,17 @@ const Purchase = Model.define(
 
     userId: {
       type: DataType.INTEGER,
-      allowNull: false,
     },
 
     tokenId: {
       type: DataType.INTEGER,
-      allowNull: false,
     },
 
     createdAt: {
-      allowNull: false,
       type: DataType.DATE
     },
 
     updatedAt: {
-      allowNull: false,
       type: DataType.DATE
     },
 

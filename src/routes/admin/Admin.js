@@ -13,9 +13,12 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import axios from "axios";
+import Dropzone from 'react-dropzone';
 import fields from "./../../data/ui-models/TokenFields";
 
 import s from './Admin.css';
+
+const fieldsAsArray = Object.keys(fields).map(k => fields[k])
 
 class Admin extends React.Component {
 
@@ -23,7 +26,7 @@ class Admin extends React.Component {
     super(props);
     this.state = {};
 
-    fields.forEach(f => {
+    Object.keys(fields).forEach(f => {
       this.state[f.key] = '';
       this.state[`${f.key  }_error`] = '';
     });
@@ -78,42 +81,48 @@ class Admin extends React.Component {
     const obj = {};
     obj[key] = val;
 
-    for (let i = 0; i < fields.length; i += 1) {
 
-      const field = fields[i];
+    if (fields[key].key === key && fields[key].validation) {
 
-      if (field.key === key && field.validation) {
-
-        const testErr = field.validation(val);
-        obj[`${key}_error`] = testErr;
-        break;
-      }
-
+      const testErr = fields[key].validation(val);
+      obj[`${key}_error`] = testErr;
     }
 
     this.setState(obj);
   }
 
+  handleFileUpload(accepted) {
+    const credentials = JSON.parse(localStorage.getItem("icox_key"));
+    const data = new FormData();
+    data.append('file', accepted[0]);
+
+    axios({
+      url: `/file/upload`,
+      method: 'post',
+      data,
+      headers: {
+        authorization: `Bearer ${credentials.access_token}`,
+        id_token: credentials.id_token,
+      }
+    }).then(response => this.uploadSuccess(response));
+
+  }
+
+  uploadSuccess({ data }) {
+    this.handleChange("tokenLogo", data.data.filename);
+  }
+
+
   render() {
+    let dropzoneRef;
     return (
       <div className={s.root}>
+        <Dropzone ref={(node) => { dropzoneRef = node; }} onDrop={(accepted) => this.handleFileUpload(accepted)} style={{display: "none"}} />
         <form onSubmit={() => this.handleSubmit()} className={s.container}>
-
-          <h1>
-            List Tokens
-          </h1>
-
-          <a href="/list-tokens">
-            <RaisedButton
-              label="List Tokens"
-              secondary
-            />
-          </a>
-
 
           <h1>Create Custom Token</h1>
 
-          {fields.map(f => (
+          {fieldsAsArray.map(f => (
             <fieldset key={f.name}>
 
               {
@@ -121,6 +130,7 @@ class Admin extends React.Component {
                   <RaisedButton
                     label="Upload Icon"
                     primary
+                    onClick={() => { dropzoneRef.open() }}
                   />
                   :
                   null

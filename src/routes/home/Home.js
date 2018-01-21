@@ -18,8 +18,8 @@ class Home extends React.Component {
     return (
       <div>
         <div className={s.banner}>
-          <h1 className={s.bannerTitle}>Start Your Own ICO</h1>
-          <p className={s.bannerDesc}>Using the power of Bitcoin</p>
+          <h1 className={s.bannerTitle}>Start Your Own Bitcoin<br /> Powered ICO</h1>
+          <p className={s.bannerDesc}>Using the power of smart contracts and asset tokenization</p>
           <a href="/login">
             <RaisedButton label="Get Started" secondary style={{marginTop:"0.5em"}}/>
           </a>

@@ -26,7 +26,8 @@ import models from './data/models';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
 import authUser from "./services/auth";
-import {allTokens, createToken, myTokens, tokenById} from "./services/tokens"
+import {allTokens, createToken, myTokens, purchaseToken, tokenById} from "./services/tokens"
+import {uploadFile, uploadMulter} from "./services/files";
 
 const app = express();
 
@@ -73,6 +74,12 @@ app.use((err, req, res, next) => {
 if (__DEV__) {
   app.enable('trust proxy');
 }
+
+
+app.get('/callback', (req, res) => {
+  res.redirect('/list-tokens')
+});
+
 /*
 app.get(
   '/login/facebook',
@@ -95,22 +102,25 @@ app.get(
   },
 );
 */
+app.use("/files", express.static('files'));
 
 app.post("/token/create", authUser, createToken);
 app.get("/tokens", authUser, allTokens);
 app.get("/my-tokens", authUser, myTokens);
 app.get("/token/:tokenId", authUser, tokenById);
+app.post("/token/:tokenId/purchase/:amount", authUser, purchaseToken);
+app.post("/file/upload", authUser, uploadMulter.single('file'), uploadFile);
 
 // app.use(checkJwt);
 
-const RSKTest = async () => {
-  var now = new Date();
-  var RSKService = require('./services/RSKService').default;
-  console.log("starting...");  
-  var rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
+const RSKTest = () => {
+  const now = new Date();
+  const RSKService = require('./services/RSKService').default;
+  console.log("starting...");
+  const rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
   console.log("rskService done");
-  /*var crowdsaleInstance = await rskService.deployCrowdsale({
-    tokenName: "My Token", 
+  /* var crowdsaleInstance = await rskService.deployCrowdsale({
+    tokenName: "My Token",
     tokenSymbol: "TKN",
     startTime: new Date(now.getTime() + 30 * 1000),
     endTime: new Date(2018, 2, 0), 
@@ -131,7 +141,7 @@ const RSKTest = async () => {
   // console.log("rsk.crowdsale.weiRaised(): ", rskService.crowdsale.weiRaised());
   // console.log("rsk.crowdsale.goalReached(): ", rskService.crowdsale.goalReached());
   // console.log("rsk.crowdsale.hasEnded(): ", rskService.crowdsale.hasEnded());
-  console.log("account: ", await rskService.createAccount());
+  // console.log("account: ", await rskService.createAccount());
 }
 
 const BTCTest = async () => {

@@ -13,6 +13,9 @@ import s from './Footer.css';
 import Link from '../Link';
 
 class Footer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <div className={s.root}>
@@ -23,17 +26,11 @@ class Footer extends React.Component {
             Home
           </Link>
           <span className={s.spacer}>·</span>
-          <Link className={s.link} to="/admin">
-            Admin
-          </Link>
-          <span className={s.spacer}>·</span>
           <Link className={s.link} to="/privacy">
             Privacy
           </Link>
           <span className={s.spacer}>·</span>
-          <Link className={s.link} to="/not-found">
-            Not Found
-          </Link>
+          <span className={s.link} style={{cursor: "pointer"}}>Log Out</span>
         </div>
       </div>
     );

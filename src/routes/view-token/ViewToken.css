@@ -14,6 +14,20 @@
   padding-right: 20px;
 }
 
-.thumb {
-  max-height: 80%;
+.container {
+  margin: 0 auto;
+  padding: 20px 0;
+  max-width: var(--max-content-width);
+}
+
+.info-h4 {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.info-p {
+  margin-top: 0;
+  font-size: 3em;
+  color: #657380;
+  line-height: 1;
 }

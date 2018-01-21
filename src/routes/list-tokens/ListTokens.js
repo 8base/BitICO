@@ -26,7 +26,7 @@ class Admin extends React.Component {
   constructor(props) {
     super(props);
 
-    const tokenHeaders = TokenFields.map((t) => t.key);
+    const tokenHeaders = Object.keys(TokenFields);
 
     this.state = {
       headers: tokenHeaders,
@@ -66,13 +66,15 @@ class Admin extends React.Component {
 
     return (
       <div className={s.root}>
-        <Table>
+        <Table onRowSelection={(d)=> {
+          window.location.pathname = `/view-token/${this.state.records[d].id}`;
+        }}>
           <TableHeader>
             <TableRow>
               {
                 this.state.headers.map((header) => (
-                    <TableHeaderColumn key={header}>{header}</TableHeaderColumn>
-                  ))
+                  <TableHeaderColumn key={header}>{header}</TableHeaderColumn>
+                ))
               }
             </TableRow>
           </TableHeader>
@@ -80,12 +82,20 @@ class Admin extends React.Component {
             {
               this.state.records.map((item) => (
                   <TableRow key={item.tokenTicker}>
-
-                    {
-                      this.state.headers.map((header) => (
-                          <TableRowColumn>{item[header]}</TableRowColumn>
-                        ))
-                    }
+                      {
+                        this.state.headers.map((header) => {
+                          console.log("header = ", header, "item[header] = ", item[header]);
+                          if (header === "tokenLogo") {
+                            return <TableRowColumn key={header}><img src={`/files/${item[header]}`} alt="" className={s.thumb}/></TableRowColumn>
+                          } 
+                            return <TableRowColumn key={header}>
+                                    {
+                                      header.indexOf('Date') > -1 ? TokenFields.fundStartDate.format(item[header]) : item[header]
+                                    }
+                                  </TableRowColumn>
+                          
+                        })
+                      }
                   </TableRow>
                 ))
             }
