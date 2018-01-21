@@ -87,13 +87,13 @@ class Admin extends React.Component {
                           console.log("header = ", header, "item[header] = ", item[header]);
                           if (header === "tokenLogo") {
                             return <TableRowColumn key={header}><img src={`/files/${item[header]}`} alt="" className={s.thumb}/></TableRowColumn>
-                          } else {
+                          } 
                             return <TableRowColumn key={header}>
                                     {
                                       header.indexOf('Date') > -1 ? TokenFields.fundStartDate.format(item[header]) : item[header]
                                     }
                                   </TableRowColumn>
-                          }
+                          
                         })
                       }
                   </TableRow>
