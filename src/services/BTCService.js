@@ -59,13 +59,14 @@ export default class BTCService {
     });
   }
 
-  buyTokens = async ( btcAddress, rskAddress, value, rskService) => {
-    this.transferToRSK(btcAddress, rskAddress, value, rskService).then((res) => {
-
+  buyTokens = ( btcAddress, rskAddress, value, rskService) => {
+    return new Promise((resolve, reject) => {
+      this.transferToRSK(btcAddress, rskAddress, value, rskService).then(async (res) => {
+        const txHash = await rskService.buyTokens(rskAddress, value);
+        resolve(txHash);
+      });
     });
-
   }
-
 
   getBalance = (account, numconf) => {
     return this.client.getBalance(account, numconf);    

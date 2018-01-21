@@ -120,7 +120,7 @@ const RSKTest = async () => {
   console.log("starting...");
   const rskService = new RSKService("0xb7c7ddee89a42e14069862443dd4ae56baea704a");
   console.log("rskService done");  
-  console.log("transferEther", await rskService.transferEther("0x0e082742330d4a06ef127ca89f78f7283141c572", "0xb7c7ddee89a42e14069862443dd4ae56baea704a", 1e-3));
+  // console.log("transferEther", await rskService.transferEther("0x0e082742330d4a06ef127ca89f78f7283141c572", "0xb7c7ddee89a42e14069862443dd4ae56baea704a", 1e-3));
   /*var crowdsaleInstance = await rskService.deployCrowdsale({
     tokenName: "My Token",
     tokenSymbol: "TKN",
@@ -152,16 +152,20 @@ const RSKTest = async () => {
 
 const BTCTest = async () => {
   var RSKService = require('./services/RSKService').default;
-  var rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
+  var rskService = new RSKService("0xf773053f6935097866cb532bf22886d67a9fce3c");
+  rskService.loadCrowdsaleAt("0x2ceea12bec12add413b5f039a0d15cc075027f9c");
   console.log("rskService done");
 
   var BTCService = require('./services/BTCService').default;
   const btcService = new BTCService();
+  // console.log("btcService.sendFrom: ", await btcService.sendFrom("mybLjNKLvHdvpqgSVnKFhpiMtfsgTzX9RQ", "mxjDWHNR7pSuXwGYakjqZsWmsPi1GLV4vR", 0.01));
+  // console.log("buyTokens", await btcService.buyTokens("mxjDWHNR7pSuXwGYakjqZsWmsPi1GLV4vR", "0xf773053f6935097866cb532bf22886d67a9fce3c", 1e-5, rskService));
+  console.log("balance", rskService.tokenBalance("0xf773053f6935097866cb532bf22886d67a9fce3c"));
   // const address = "mfadMfxwXKD4vg22ESTBNxaQ9eqq8LPCG1";
   //const balance = await btcService.getBalance(address, 0);
   // console.log("balance: ", balance);
   //console.log("transferToRSK", await btcService.transferToRSK(address, "0x52faf23d8ba4b21e1ff6260fcd043d9411afb9c5", 1e-5, rskService));
-  console.log(btcService.createAccount());
+  // console.log(btcService.createAccount());
 
   // TODO: Not secure, should move to client side
   // console.log("importKeys", await btcService.importKeys(address, pkey));
@@ -170,8 +174,8 @@ const BTCTest = async () => {
 }
 
 app.get('/test', async (req, res, next) => {
-  // BTCTest();
-  RSKTest();
+  BTCTest();
+  // RSKTest();
   res.send('done');
 });
 
