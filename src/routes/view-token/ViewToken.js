@@ -33,7 +33,9 @@ class Admin extends React.Component {
     this.timer = setTimeout(() => this.progress(5), 1000);
 
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
-    const id = parseInt(window.location.href.match(/\/(\d)$/)[1], 10);
+    const urlHashIndex = window.location.href.indexOf("#");
+    const urlWithoutHash = urlHashIndex > -1 ? window.location.href.substring(0, urlHashIndex): window.location.href;
+    const id = parseInt(urlWithoutHash.match(/\/(\d)$/)[1], 10);
 
     const params = {
       method: 'GET',
