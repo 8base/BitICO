@@ -163,10 +163,10 @@ class ViewToken extends React.Component {
           <h1>{this.state.record.tokenName} ({this.state.record.tokenTicker})</h1>
 
           <h4 className={s["info-h4"]}>Total Funding Raised</h4>
-          <LinearProgress mode="determinate" value={parseFloat(this.state.record.totalRaised)/totalMoney} style={{height: "30px"}} />
+          <LinearProgress mode="determinate" value={parseFloat(this.state.record.totalRaised)/totalMoney * 100} style={{height: "30px"}} />
 
           <h4 className={s["info-h4"]}>Soft Cap Raised</h4>
-          <LinearProgress mode="determinate" value={parseFloat(this.state.record.softCap)/totalMoney} style={{height: "40px"}} color="#592877"/>
+          <LinearProgress mode="determinate" value={parseFloat(this.state.record.softCap)/totalMoney * 100} style={{height: "40px"}} color="#592877"/>
 
           <Container>
             <Row>
