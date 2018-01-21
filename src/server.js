@@ -119,6 +119,7 @@ const RSKTest = () => {
   console.log("starting...");
   const rskService = new RSKService("0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
   console.log("rskService done");
+  rskService.login("RskAddress");
   /* var crowdsaleInstance = await rskService.deployCrowdsale({
     tokenName: "My Token",
     tokenSymbol: "TKN",
@@ -132,7 +133,8 @@ const RSKTest = () => {
       console.log("Contract sent");
     },
   });
-  console.log('Mined: ', crowdsaleInstance.address);*/
+  console.log('CrowdsaleRskAddress: ', crowdsaleInstance.address);
+  console.log('TokenRskAddress: ', rskService.token.address);*/
   // console.log('Token: ', crowdsaleInstance.address);*/
   // rskService.loadCrowdsaleAt("0xdf05a424f3903ae6f1ecf69497a6a10601dc94c9");
   // console.log(rskService.token);
