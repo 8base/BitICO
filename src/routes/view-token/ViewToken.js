@@ -11,13 +11,16 @@ import React from 'react';
 import axios from 'axios';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import LinearProgress from 'material-ui/LinearProgress';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import {Row, Col, Container} from 'react-grid-system';
+import numeral from "numeral";
 
 import s from "./ViewToken.css";
 import TokenFields from './../../data/ui-models/TokenFields';
 
 
-class Admin extends React.Component {
+class ViewToken extends React.Component {
 
   constructor(props) {
     super(props);
@@ -25,6 +28,7 @@ class Admin extends React.Component {
     this.state = {
       record: {},
       completed: 0,
+      purchase: "",
     }
   }
 
@@ -33,9 +37,7 @@ class Admin extends React.Component {
     this.timer = setTimeout(() => this.progress(5), 1000);
 
     const credentials = JSON.parse(localStorage.getItem("icox_key"));
-    const urlHashIndex = window.location.href.indexOf("#");
-    const urlWithoutHash = urlHashIndex > -1 ? window.location.href.substring(0, urlHashIndex): window.location.href;
-    const id = parseInt(urlWithoutHash.match(/\/(\d)$/)[1], 10);
+    const id = parseInt(window.location.pathname.match(/(\d*)$/)[1], 10);
 
     const params = {
       method: 'GET',
@@ -50,13 +52,20 @@ class Admin extends React.Component {
 
       const record = response.data.data || {};
       this.setState({record})
-    });
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
 
+  onPurchaseInputChange (e) {
+    this.setState({
+      purchase: e.target.value
+    })
+  }
 
   progress(completed) {
     if (completed > 100) {
@@ -66,6 +75,32 @@ class Admin extends React.Component {
       const diff = Math.random() * 10;
       this.timer = setTimeout(() => this.progress(completed + diff), 1000);
     }
+  }
+
+  makePurchase () {
+
+    const credentials = JSON.parse(localStorage.getItem("icox_key"));
+
+    const params = {
+      method: 'POST',
+      url: `/buy`,
+      headers: {
+        authorization: `Bearer ${credentials.access_token}`,
+        id_token: credentials.id_token,
+      },
+      data: {
+        tokenId: parseInt(window.location.pathname.match(/\/(\d*)$/)[1], 10),
+        amount: numeral(this.state.purchase).value()
+      }
+    };
+
+    console.log(params)
+
+    axios(params).then(response => {
+      console.log(response)
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
   render() {
@@ -115,6 +150,26 @@ class Admin extends React.Component {
                 <p className={s["info-p"]}>{TokenFields.fundEndDate.format(this.state.record.fundEndDate)}</p>
               </Col>
             </Row>
+            <Row>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>Your Current Balance</h4>
+                <p className={s["info-p"]}>$4,000</p>
+              </Col>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>Purchase More</h4>
+                <p className={s["info-p"]}>{this.state.record.hardCap}</p>
+              </Col>
+              <Col sm={4}>
+                <h4 className={s["info-h4"]}>Purchase More {`"${this.state.record.tokenName}"`}</h4>
+                <TextField
+                  hintText="Ex: 25,000"
+                  floatingLabelText="Purchase Amount"
+                  style={{fontSize: '22px', fontFamily:'Helvetica', fontWeight: 400}}
+                  onChange={(e) => {this.onPurchaseInputChange(e)}}
+                />
+                <RaisedButton label="Purchase" primary onClick={()=> this.makePurchase()} style={{textTransform:'capitalize'}} />
+              </Col>
+            </Row>
           </Container>
         </div>
       </div>
@@ -122,4 +177,4 @@ class Admin extends React.Component {
   }
 }
 
-export default withStyles(s)(Admin);
+export default withStyles(s)(ViewToken);

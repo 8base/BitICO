@@ -12,6 +12,7 @@ const createToken = async (req, res) => {
 
     const now = new Date();
 
+    console.log("user.rskAddress = ", user.rskAddress);
     const rskService = new RSKService(user.rskAddress);
     console.log("rskService done");
     body.softCap = 0.00001;
@@ -45,6 +46,8 @@ const createToken = async (req, res) => {
       success: true
     });
   } catch (e) {
+
+    console.log("e = ", e);
     let  { message } = e;
     if (e.name === "SequelizeUniqueConstraintError" && e.errors.length > 0) {
       const field = e.errors[0].path;

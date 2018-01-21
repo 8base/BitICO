@@ -14,7 +14,23 @@ import s from './Navigation.css';
 import Link from '../Link';
 
 class Navigation extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      isLoggedIn: false
+    }
+  }
+
+  componentDidMount () {
+    const isLoggedIn = !!localStorage.getItem("icox_key");
+    this.setState({
+      isLoggedIn
+    })
+  }
+
   render() {
+
     return (
       <div className={s.root} role="navigation">
         <Link className={s.link} to="/about">
@@ -27,8 +43,12 @@ class Navigation extends React.Component {
           Newest Tokens
         </Link>
         {/* <span className={s.spacer}> | </span> */}
-        {/* <Link className={s.link} to="/login"> */}
-          {/* Log in */}
+
+        {
+          this.state.isLoggedIn ? <Link className={s.link} to="/admin">Create Token</Link> : null
+        }
+
+
         {/* </Link> */}
         {/* <span className={s.spacer}>or</span> */}
         <Link className={cx(s.link, s.highlight)} to="/login">

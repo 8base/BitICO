@@ -17,8 +17,9 @@ import Dropzone from 'react-dropzone';
 import fields from "./../../data/ui-models/TokenFields";
 
 import s from './Admin.css';
+import numeral from "numeral";
 
-const fieldsAsArray = Object.keys(fields).map(k => fields[k])
+const fieldsAsArray = Object.keys(fields).map(k => fields[k]);
 
 class Admin extends React.Component {
 
@@ -41,19 +42,18 @@ class Admin extends React.Component {
 
     const body = {};
 
-    console.log("fields = ", fields);
-    fields.forEach(f => {
+    fieldsAsArray.forEach(f => {
 
       const value = this.state[f.key];
       const { key }= f;
 
       if (f.type === 'number') {
 
-        body[key] = parseInt(value, 10);
+        body[key] = numeral(value).value();
 
       } else if (f.type === 'float') {
 
-        body[key] = parseFloat(value);
+        body[key] = numeral(value).value();
 
       } else if (f.type === 'date') {
 
