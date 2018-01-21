@@ -455,17 +455,19 @@ export default class RSKService {
     this.provider = new Web3.providers.HttpProvider(config.rsk.url);
     this.web3 = new Web3(this.provider);
 
-    // TODO: this is hack to avoid signing transactions - NOT SECURE!
-    if (ownerAddress && ownerPrivateKey) {
-      this.login(ownerAddress, ownerPrivateKey);
-    }
+    // TODO: this is hack to avoid signing transactions - NOT SECURE!    
+    this.login(ownerAddress, ownerPrivateKey);  
   }
 
   login = (ownerAddress, ownerPrivateKey) => {
-      this.web3.personal.importRawKey(ownerPrivateKey, DEFAULT_PASSPHRASE);
+    if (ownerPrivateKey) {
+      this.web3.personal.importRawKey(ownerPrivateKey, DEFAULT_PASSPHRASE);    
+    }
+    if (ownerAddress) {
       this.web3.personal.unlockAccount(ownerAddress, DEFAULT_PASSPHRASE);
-      this.ownerAddress = ownerAddress;
-      this.ownerPrivateKey = ownerPrivateKey;
+    }    
+    this.ownerAddress = ownerAddress;
+    this.ownerPrivateKey = ownerPrivateKey;
   }
 
   deployCrowdsale = ({

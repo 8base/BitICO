@@ -58,7 +58,6 @@ export default class BTCService {
   getAccount = (address) => {
     return this.client.getAccount(address);    
   }
-  
 
   getAccount = () => {
 
