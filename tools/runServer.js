@@ -50,15 +50,15 @@ function runServer() {
       silent: false,
     });
 
-    if (pending) {
-      server.once('exit', (code, signal) => {
-        if (pending) {
-          throw new Error(
-            `Server terminated unexpectedly with code: ${code} signal: ${signal}`,
-          );
-        }
-      });
-    }
+    // if (pending) {
+    //   server.once('exit', (code, signal) => {
+    //     if (pending) {
+    //       throw new Error(
+    //         `Server terminated unexpectedly with code: ${code} signal: ${signal}`,
+    //       );
+    //     }
+    //   });
+    // }
 
     server.stdout.on('data', onStdOut);
     server.stderr.on('data', x => process.stderr.write(x));

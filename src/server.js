@@ -110,6 +110,44 @@ app.get("/token/:tokenId", authUser, tokenById);
 
 // app.use(checkJwt);
 
+const RSKTest = () => {
+  var now = new Date();
+  var RSKService = require('./services/RSKService').default;
+  console.log("starting...");  
+  var rskService = new RSKService(0x0e082742330d4a06ef127ca89f78f7283141c572", "923b6888e648c22a69fbb4afe985fe90d61c6c3f5d84b62025e358bb8fcf1776");
+  console.log("rskService done");
+  /*var crowdsaleInstance = await rskService.deployCrowdsale({
+    tokenName: "My Token", 
+    tokenSymbol: "TKN",
+    startTime: new Date(now.getTime() + 30 * 1000),
+    endTime: new Date(2018, 2, 0), 
+    rate: 1,
+    goal: 4,
+    cap: 8,
+    wallet: "0x0e082742330d4a06ef127ca89f78f7283141c572",
+    onSent: (contract) => {
+      console.log("Contract sent");
+    },
+  });
+  console.log('Mined: ', crowdsaleInstance.address);*/
+  // rskService.loadCrowdsaleAt("0x143e692b0f131a0fa173705858b734e5527502c9");
+  //console.log(rskService.token);
+  // console.log(rskService.buyTokens("0x0e082742330d4a06ef127ca89f78f7283141c572", 1e-18));  
+  // console.log(rskService.tokenBalance("0x0e082742330d4a06ef127ca89f78f7283141c572"));
+  console.log("account: ", personal.newAccount("passphrase"));
+}
+
+const BTCTest = () => {
+  const BTCService = new BTCService();
+  const balance = BTCService.getBalance("mybLjNKLvHdvpqgSVnKFhpiMtfsgTzX9RQ");
+  console.log("balance: ", balance);
+}
+
+app.get('/test', async (req, res, next) => {
+  BTCTest();
+  res.send('done');
+});
+
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
@@ -136,6 +174,7 @@ app.get("/token/:tokenId", authUser, tokenById);
     },
   )
 ); */
+
 
 
 

@@ -13,101 +13,9 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import axios from "axios";
+import fields from "./../../data/ui-models/TokenFields";
 
 import s from './Admin.css';
-
-const fields = [
-  {
-    name: 'Token Logo',
-    key:  'tokenLogo',
-    type: 'file',
-  },
-  {
-    name: 'Token Name',
-    key: 'tokenName',
-    example: 'Ex: BitBam',
-    type: 'text',
-  },
-  {
-    name: 'Token Ticker',
-    key: 'tokenTicker',
-    example: 'Ex: COI',
-    type: 'text',
-    validation: (text) => {
-      if (/^[^a-z]*$/.test(text)) {
-        return "";
-      }
-
-      return "Must be an all caps string";
-    },
-  },
-  {
-    name: 'Total Supply',
-    key: 'totalSupply',
-    example: 'Ex: 1,000,000',
-    type: 'number',
-    validation: (text) => {
-      if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
-        return "";
-      }
-
-      return "Must a number without decimals (commas optional but must be properly formatted)";
-    },
-  },
-  {
-    name: 'Allocation',
-    key: 'allocation',
-    example: 'Ex: 300,000',
-    type: 'number',
-    validation: (text) => {
-      if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
-        return "";
-      }
-
-      return "Must a number without decimals (commas optional but must be properly formatted)";
-    },
-  },
-  {
-    name: 'Soft Cap',
-    key: 'softCap',
-    type: 'number',
-    validation: (text) => {
-      if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
-        return "";
-      }
-
-      return "Must a number without decimals (commas optional but must be properly formatted)";
-    },
-  },
-  {
-    name: 'Hard Cap',
-    key: 'hardCap',
-    type: 'number',
-    validation: (text) => {
-      if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(text)) {
-        return "";
-      }
-
-      return "Must a number without decimals (commas optional but must be properly formatted)";
-    },
-  },
-  {
-    name: 'Fund Start Date',
-    key: 'fundStartDate',
-    type: 'date',
-  },
-  {
-    name: 'Fund End Date',
-    key: 'fundEndDate',
-    type: 'date',
-  },
-  {
-    name: 'BTC Value Per Token',
-    key: 'btcValuePerToken',
-    example: 'Ex: 0.00001',
-    type: 'float',
-  },
-];
 
 class Admin extends React.Component {
 
@@ -153,7 +61,6 @@ class Admin extends React.Component {
       }
     });
 
-
     axios({
       method: 'post',
       url: '/token/create',
@@ -191,6 +98,19 @@ class Admin extends React.Component {
     return (
       <div className={s.root}>
         <form onSubmit={() => this.handleSubmit()} className={s.container}>
+
+          <h1>
+            List Tokens
+          </h1>
+
+          <a href="/list-tokens">
+            <RaisedButton
+              label="List Tokens"
+              secondary
+            />
+          </a>
+
+
           <h1>Create Custom Token</h1>
 
           {fields.map(f => (
