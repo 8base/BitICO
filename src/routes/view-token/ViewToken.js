@@ -215,7 +215,7 @@ class ViewToken extends React.Component {
                 <h4 className={s["info-h4"]}>Purchase More {`"${this.state.record.tokenName}"`}</h4>
                 <TextField
                   hintText="Ex: 25,000"
-                  floatingLabelText="Purchase Amount"
+                  floatingLabelText="Purchase Amount (BTC)"
                   style={{fontSize: '22px', fontFamily:'Helvetica', fontWeight: 400}}
                   onChange={(e) => {this.onPurchaseInputChange(e)}}
                 />
